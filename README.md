@@ -10,7 +10,7 @@
 👉 [Issues](https://github.com/你的用户名/online-judge-30days/issues) 按时间倒序
 
 **项目演示**：
-🔗 https://judge.你的域名.top（3月20日上线后更新）
+🔗 https://judge.liu-jinhao-C.top（3月20日上线后更新）
 
 **关于我**：
 某双非大三学生，2026届，正在找暑期实习。
