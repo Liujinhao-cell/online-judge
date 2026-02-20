@@ -1,13 +1,11 @@
-package com.example.onlinejudge;
+package com.example.system;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OnlineJudgeApplication {
-
+public class OjSystemApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OnlineJudgeApplication.class, args);
+        SpringApplication.run(OjSystemApplication.class,args);
     }
-
 }
