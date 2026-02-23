@@ -17,4 +17,8 @@ public class TestController {
     public List<?> list(){
         return testService.list();
     }
+    @GetMapping("/add")
+    public String add(){
+        return testService.add();
+    }
 }
