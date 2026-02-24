@@ -5,16 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.example</groupId>
-        <artifactId>online-judge</artifactId>
+        <artifactId>oj-common</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>oj-common</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>oj-common-core</module>
-        <module>oj-common-swagger</module>
-    </modules>
+    <artifactId>oj-common-swagger</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -22,4 +17,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi.version}</version>
+        </dependency>
+    </dependencies>
 </project>
