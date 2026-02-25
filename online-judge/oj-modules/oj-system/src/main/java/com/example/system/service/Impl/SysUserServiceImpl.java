@@ -7,6 +7,7 @@ import com.example.system.controller.result.LoginResult;
 import com.example.system.domain.SysUser;
 import com.example.system.mapper.SysUserMapper;
 import com.example.system.service.SysUserService;
+import com.example.system.utils.BCryptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +27,13 @@ public class SysUserServiceImpl implements SysUserService {
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
         SysUser sysUser = sysUserMapper.selectOne(queryWrapper
                 .select(SysUser::getPassword).eq(SysUser::getUserAccount, userAccount));
-        R loginResult = new R();
         if(null == sysUser){
-            loginResult.setCode(ResultCode.AILED_USER_EXISTS.getCode());
-            loginResult.setMsg(ResultCode.AILED_USER_EXISTS.getMsg());
-            return loginResult;
+            return R.fail(ResultCode.AILED_USER_EXISTS);
         }
-        if(!sysUser.getPassword().equals(password)){
-            loginResult.setCode(ResultCode.FAILED_LOGIN.getCode());
-            loginResult.setMsg(ResultCode.FAILED_LOGIN.getMsg());
-            return loginResult;
+        if(!BCryptUtils.matchesPassword(password,sysUser.getPassword())){
+            return R.fail(ResultCode.FAILED_LOGIN);
         }
-        loginResult.setCode(ResultCode.SUCCESS.getCode());
-        loginResult.setMsg(ResultCode.SUCCESS.getMsg());
-        return loginResult;
+        return R.ok();
     }
+
 }

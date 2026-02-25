@@ -1,5 +1,6 @@
 package com.example.common.core.domain;
 
+import com.example.common.core.domain.enums.ResultCode;
 import lombok.Data;
 
 @Data
@@ -16,4 +17,47 @@ public class R<T> {
      *响应数据
      */
     private T data;
+
+    /**
+     * @return {@link R }<{@link T }>
+     */
+    public static <T> R<T> ok(){
+        return assembleResult(null,ResultCode.SUCCESS);
+    }
+
+    /**
+     * @param data
+     * @return {@link R }<{@link T }>
+     */
+    public static <T> R<T> ok(T data){
+        return assembleResult(data,ResultCode.SUCCESS);
+    }
+
+    /**
+     * @return {@link R }<{@link T }>
+     */
+    public static <T> R<T> fail(){
+        return assembleResult(null,ResultCode.FAILED);
+    }
+
+    /**
+     * @param resultCode
+     * @return {@link R }<{@link T }>
+     */
+    public static <T> R<T> fail(ResultCode resultCode){
+        return assembleResult(null,resultCode);
+    }
+
+    /**
+     * @param data
+     * @param resultCode
+     * @return {@link R }<{@link T }>
+     */
+    public static <T> R<T> assembleResult(T data, ResultCode resultCode){
+        R<T> r = new R<>();
+        r.setCode(resultCode.getCode());
+        r.setData(data);
+        r.setMsg(resultCode.getMsg());
+        return r;
+    }
 }
