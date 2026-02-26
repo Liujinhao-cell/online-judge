@@ -1,6 +1,6 @@
 package com.example.common.core.domain;
 
-import com.example.common.core.domain.enums.ResultCode;
+import com.example.common.core.enums.ResultCode;
 import lombok.Data;
 
 @Data

@@ -2,7 +2,7 @@ package com.example.system.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.common.core.domain.R;
-import com.example.common.core.domain.enums.ResultCode;
+import com.example.common.core.enums.ResultCode;
 import com.example.system.controller.result.LoginResult;
 import com.example.system.domain.SysUser;
 import com.example.system.mapper.SysUserMapper;

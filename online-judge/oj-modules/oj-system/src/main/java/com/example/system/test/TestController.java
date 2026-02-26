@@ -1,7 +1,7 @@
 package com.example.system.test;
 
 import com.example.common.core.domain.R;
-import com.example.common.core.domain.enums.ResultCode;
+import com.example.common.core.enums.ResultCode;
 import com.example.system.test.domain.LoginTestDTO;
 import com.example.system.test.service.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
