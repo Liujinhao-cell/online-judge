@@ -4,11 +4,13 @@ import com.example.common.core.domain.R;
 import com.example.common.core.enums.ResultCode;
 import com.example.system.test.domain.LoginTestDTO;
 import com.example.system.test.service.ITestService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -37,5 +39,11 @@ public class TestController {
         result.setMsg(ResultCode.SUCCESS.getMsg());
         result.setData("apifoxPost:"+loginTestDTO.getUserAccount() +":"+loginTestDTO.getPassword());
         return result;
+    }
+    @GetMapping("/log")
+    public String log(){
+        log.info("info级别");
+        log.error("error级别日志");
+        return "日志测试";
     }
 }
