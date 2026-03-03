@@ -1,0 +1,38 @@
+18:38:51.760 [main] INFO  c.e.s.OjSystemApplication - [logStartupProfileInfo,630] - No active profile set, falling back to 1 default profile: "default"
+18:38:52.127 [main] INFO  o.s.c.c.s.GenericScope - [setSerializationId,282] - BeanFactory id=f11d9d01-8820-3d79-bbac-458fabbdfe32
+18:38:52.292 [main] INFO  o.s.b.w.e.t.TomcatWebServer - [initialize,108] - Tomcat initialized with port(s): 9201 (http)
+18:38:52.297 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Initializing ProtocolHandler ["http-nio-9201"]
+18:38:52.298 [main] INFO  o.a.c.c.StandardService - [log,173] - Starting service [Tomcat]
+18:38:52.298 [main] INFO  o.a.c.c.StandardEngine - [log,173] - Starting Servlet engine: [Apache Tomcat/10.1.4]
+18:38:52.357 [main] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring embedded WebApplicationContext
+18:38:52.358 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [prepareWebApplicationContext,291] - Root WebApplicationContext: initialization completed in 577 ms
+18:38:53.955 [main] INFO  o.s.c.c.u.InetUtils - [convertAddress,170] - Cannot determine local hostname
+18:38:53.994 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-9201"]
+18:38:54.007 [main] INFO  o.s.b.w.e.t.TomcatWebServer - [start,220] - Tomcat started on port(s): 9201 (http) with context path ''
+18:38:55.140 [main] INFO  o.s.c.c.u.InetUtils - [convertAddress,170] - Cannot determine local hostname
+18:38:55.147 [main] INFO  c.e.s.OjSystemApplication - [logStarted,57] - Started OjSystemApplication in 6.113 seconds (process running for 6.555)
+18:39:12.394 [http-nio-9201-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+18:39:12.394 [http-nio-9201-exec-1] INFO  o.s.w.s.DispatcherServlet - [initServletBean,532] - Initializing Servlet 'dispatcherServlet'
+18:39:12.395 [http-nio-9201-exec-1] INFO  o.s.w.s.DispatcherServlet - [initServletBean,554] - Completed initialization in 1 ms
+18:39:12.408 [http-nio-9201-exec-1] INFO  c.e.s.t.TestController - [log,45] - info级别
+20:59:02.928 [http-nio-9201-exec-5] INFO  c.z.h.HikariDataSource - [getConnection,110] - HikariPool-1 - Starting...
+20:59:04.807 [http-nio-9201-exec-5] INFO  c.z.h.p.HikariPool - [checkFailFast,565] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7b418765
+20:59:04.812 [http-nio-9201-exec-5] INFO  c.z.h.HikariDataSource - [getConnection,123] - HikariPool-1 - Start completed.
+21:32:33.567 [SpringApplicationShutdownHook] INFO  c.z.h.HikariDataSource - [close,350] - HikariPool-1 - Shutdown initiated...
+21:32:50.027 [main] INFO  c.e.s.OjSystemApplication - [logStartupProfileInfo,630] - No active profile set, falling back to 1 default profile: "default"
+21:32:50.749 [main] INFO  o.s.c.c.s.GenericScope - [setSerializationId,282] - BeanFactory id=f11d9d01-8820-3d79-bbac-458fabbdfe32
+21:32:51.039 [main] INFO  o.s.b.w.e.t.TomcatWebServer - [initialize,108] - Tomcat initialized with port(s): 9201 (http)
+21:32:51.051 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Initializing ProtocolHandler ["http-nio-9201"]
+21:32:51.052 [main] INFO  o.a.c.c.StandardService - [log,173] - Starting service [Tomcat]
+21:32:51.052 [main] INFO  o.a.c.c.StandardEngine - [log,173] - Starting Servlet engine: [Apache Tomcat/10.1.4]
+21:32:51.156 [main] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring embedded WebApplicationContext
+21:32:51.157 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - [prepareWebApplicationContext,291] - Root WebApplicationContext: initialization completed in 1108 ms
+21:32:53.161 [main] INFO  o.s.c.c.u.InetUtils - [convertAddress,170] - Cannot determine local hostname
+21:32:53.205 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-9201"]
+21:32:53.230 [main] INFO  o.s.b.w.e.t.TomcatWebServer - [start,220] - Tomcat started on port(s): 9201 (http) with context path ''
+21:32:54.534 [main] INFO  o.s.c.c.u.InetUtils - [convertAddress,170] - Cannot determine local hostname
+21:32:54.549 [main] INFO  c.e.s.OjSystemApplication - [logStarted,57] - Started OjSystemApplication in 7.821 seconds (process running for 8.579)
+23:38:15.203 [http-nio-9201-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+23:38:15.212 [http-nio-9201-exec-1] INFO  o.s.w.s.DispatcherServlet - [initServletBean,532] - Initializing Servlet 'dispatcherServlet'
+23:38:15.248 [http-nio-9201-exec-1] INFO  o.s.w.s.DispatcherServlet - [initServletBean,554] - Completed initialization in 34 ms
+23:38:16.950 [http-nio-9201-exec-7] INFO  o.s.a.AbstractOpenApiResource - [getOpenApi,387] - Init duration for springdoc-openapi is: 853 ms

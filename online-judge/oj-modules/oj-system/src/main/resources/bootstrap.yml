@@ -1,20 +1,35 @@
-server:
-  port: 9201
-
 spring:
   application:
     name: oj-system
+  cloud:
+    nacos:
+      config:
+        server-addr: 47.118.20.7:8848
+        file-extension: yaml
+        namespace: ''  # 如果是public命名空间，用空字符串
+        group: DEFAULT_GROUP
+        # 关键：这些配置可能缺失
+        enabled: true
+        refresh-enabled: true
+      discovery:
+        server-addr: 47.118.20.7:8848
+        namespace: ''
+        enabled: true
+  profiles:
+    active: local
 
-  datasource:
-    url: jdbc:mysql://39.96.113.216:3306/bitoj_dev?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
-    username: oj-test
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver  # 建议显式指定驱动类
-
-    hikari:
-      minimum-idle: 5                    # 最小空闲连接数
-      maximum-pool-size: 20               # 最大连接数
-      idle-timeout: 30000                  # 空闲连接存活时间（毫秒）
-      connection-timeout: 30000             # 连接超时时间（毫秒）
-      # connection-test-query: SELECT 1     # 如果驱动支持 JDBC4.0，可以注释掉
-      # keepalive-time: 300000               # 多久检查一次连接的活性（默认不启用）
+#server:
+#  port: 9201
+#  datasource:
+#    url: jdbc:mysql://39.96.113.216:3306/bitoj_dev?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+#    username: oj-test
+#    password: 123456
+#    driver-class-name: com.mysql.cj.jdbc.Driver  # 建议显式指定驱动类
+#
+#    hikari:
+#      minimum-idle: 5                    # 最小空闲连接数
+#      maximum-pool-size: 20               # 最大连接数
+#      idle-timeout: 30000                  # 空闲连接存活时间（毫秒）
+#      connection-timeout: 30000             # 连接超时时间（毫秒）
+#      # connection-test-query: SELECT 1     # 如果驱动支持 JDBC4.0，可以注释掉
+#      # keepalive-time: 300000               # 多久检查一次连接的活性（默认不启用）
