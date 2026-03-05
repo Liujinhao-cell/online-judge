@@ -2,6 +2,8 @@ package com.example.system.test;
 
 import com.example.common.core.domain.R;
 import com.example.common.core.enums.ResultCode;
+import com.example.common.redis.service.RedisService;
+import com.example.system.domain.SysUser;
 import com.example.system.test.domain.LoginTestDTO;
 import com.example.system.test.service.ITestService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,8 @@ import java.util.List;
 public class TestController {
     @Autowired
     private ITestService testService;
+    @Autowired
+    private RedisService redisService;
     @GetMapping("/list")
     public List<?> list(){
         return testService.list();
@@ -39,6 +43,14 @@ public class TestController {
         result.setMsg(ResultCode.SUCCESS.getMsg());
         result.setData("apifoxPost:"+loginTestDTO.getUserAccount() +":"+loginTestDTO.getPassword());
         return result;
+    }
+    @GetMapping("/redisAddAndGet")
+    public String redisAddAndGet(){
+        SysUser sysUser = new SysUser();
+        sysUser.setUserAccount("redisTest");
+        redisService.setCacheObject("u",sysUser);
+        SysUser u = redisService.getCacheObject("u", SysUser.class);
+        return u.toString();
     }
     @GetMapping("/log")
     public String log(){

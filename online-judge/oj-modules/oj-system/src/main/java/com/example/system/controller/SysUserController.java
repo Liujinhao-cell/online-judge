@@ -28,12 +28,12 @@ public class SysUserController {
      * @return {@link R }<{@link Void }>
      */
     @PostMapping("/login")
-    @Operation(summary = "管理员登录", description = "根据帐号密码管进行登录")
+    @Operation(summary = "管理员登录", description = "根据帐号密码管理员进行登录")
     @ApiResponse(responseCode = "1000", description = "操作成功")
     @ApiResponse(responseCode = "2000", description = "服务器繁忙，请稍后重试")
     @ApiResponse(responseCode = "3102", description = "⽤⼾不存在")
     @ApiResponse(responseCode = "3103", description = "⽤⼾名或密码错误")
-    public R<Void> login(@RequestBody LoginDTO loginDTO) {
+    public R<String> login(@RequestBody LoginDTO loginDTO) {
         return sysUserService.login(loginDTO.getUserAccount(), loginDTO.getPassword());
     }
 

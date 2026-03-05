@@ -27,5 +27,4 @@ public class BCryptUtils {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
-
 }

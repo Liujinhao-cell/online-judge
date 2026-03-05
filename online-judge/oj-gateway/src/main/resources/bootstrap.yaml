@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: oj-gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 47.118.20.7:8848
+        file-extension: yaml
+        namespace: ''  # 如果是public命名空间，用空字符串
+        group: DEFAULT_GROUP
+        # 关键：这些配置可能缺失
+        enabled: true
+        refresh-enabled: true
+      discovery:
+        server-addr: 47.118.20.7:8848
+        namespace: ''
+        enabled: true
+  profiles:
+    active: local

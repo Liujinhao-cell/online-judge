@@ -1,4 +1,4 @@
-package com.example.common.security;
+package com.example.common.security.handler;
 
 import com.example.common.core.domain.R;
 import com.example.common.core.enums.ResultCode;
