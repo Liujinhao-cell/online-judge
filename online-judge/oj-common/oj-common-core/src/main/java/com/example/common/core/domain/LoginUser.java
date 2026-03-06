@@ -1,4 +1,4 @@
-package com.example.common.security.domain;
+package com.example.common.core.domain;
 
 import lombok.Data;
 

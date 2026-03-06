@@ -2,6 +2,7 @@ package com.example.common.security.handler;
 
 import com.example.common.core.domain.R;
 import com.example.common.core.enums.ResultCode;
+import com.example.common.security.exception.ServiceException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -25,6 +26,19 @@ public class GlobalExceptionHandler {
         return R.fail(ResultCode.ERROR);
     }
 
+    /**
+     * 自定义异常
+     * @param e
+     * @param request
+     * @return {@link R }<{@link ? }>
+     */
+    @ExceptionHandler(ServiceException.class)
+    public R<?> handleServiceException(ServiceException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        ResultCode resultCode = e.getResultCode();
+        log.error("请求地址'{}',发⽣业务异常.", requestURI, e);
+        return R.fail(resultCode);
+    }
     /**
      * 拦截运⾏时异常
      */

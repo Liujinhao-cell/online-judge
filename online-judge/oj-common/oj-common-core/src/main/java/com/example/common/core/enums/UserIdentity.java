@@ -10,7 +10,7 @@ public enum UserIdentity {
     ORDINARY(1, "普通用户"),
     ADMIN(2, "管理员");
 
-    private int value;
+    private Integer value;
 
     private String des;
 }

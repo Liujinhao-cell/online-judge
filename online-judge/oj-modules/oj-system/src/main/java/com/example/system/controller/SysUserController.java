@@ -1,5 +1,6 @@
 package com.example.system.controller;
 
+import com.example.common.core.controller.BaseController;
 import com.example.common.core.domain.R;
 import com.example.system.domain.LoginDTO;
 import com.example.system.domain.SysUserSaveDTO;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/sysUser")
 @Tag(name = "管理员接口")
-public class SysUserController {
+public class SysUserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
 
@@ -48,7 +49,7 @@ public class SysUserController {
     @ApiResponse(responseCode = "2000", description = "服务器繁忙，请稍后重试")
     @ApiResponse(responseCode = "3101", description = "⽤⼾已存在")
     public R<Void> add(@RequestBody SysUserSaveDTO sysUserSaveDTO) {
-        return null;
+        return toResult(sysUserService.add(sysUserSaveDTO));
     }
 
     /**
