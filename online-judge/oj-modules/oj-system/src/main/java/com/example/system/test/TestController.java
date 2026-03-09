@@ -3,11 +3,13 @@ package com.example.system.test;
 import com.example.common.core.domain.R;
 import com.example.common.core.enums.ResultCode;
 import com.example.common.redis.service.RedisService;
-import com.example.system.domain.SysUser;
+import com.example.system.domain.sysuser.SysUser;
 import com.example.system.test.domain.LoginTestDTO;
+import com.example.system.test.domain.ValidationDTO;
 import com.example.system.test.service.ITestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,5 +59,9 @@ public class TestController {
         log.info("info级别");
         log.error("error级别日志");
         return "日志测试";
+    }
+    @GetMapping("/validation")
+    public String validation(@Validated ValidationDTO validationDTO){
+        return "参数测试";
     }
 }

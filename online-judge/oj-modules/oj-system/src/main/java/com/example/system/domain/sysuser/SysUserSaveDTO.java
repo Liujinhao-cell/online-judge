@@ -1,10 +1,10 @@
-package com.example.system.domain;
+package com.example.system.domain.sysuser;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class SysUserVO {
+public class SysUserSaveDTO {
     /**
      *帐号
      */
@@ -13,6 +13,6 @@ public class SysUserVO {
     /**
      *密码
      */
-    @Schema(description = "用户昵称")
-    private String nickName;
+    @Schema(description = "用户密码")
+    private String password;
 }

@@ -9,4 +9,9 @@ public class LoginUser {
      */
     private Integer identity;
 
+    /**
+     * 用户昵称
+     */
+    private String nickName;
+
 }

@@ -1,4 +1,4 @@
-package com.example.system.domain;
+package com.example.system.domain.sysuser;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,5 +18,7 @@ public class SysUser extends BaseEntity {
     private String userAccount;
 
     private String password;
+
+    private String nickName;
 
 }
