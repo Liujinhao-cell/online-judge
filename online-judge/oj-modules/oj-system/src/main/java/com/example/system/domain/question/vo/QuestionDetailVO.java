@@ -1,15 +1,14 @@
 package com.example.system.domain.question.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
-public class QuestionVO implements Serializable {
+public class QuestionDetailVO implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long questionId;
@@ -18,8 +17,15 @@ public class QuestionVO implements Serializable {
 
     private Integer difficulty;
 
-    private String createName;
+    private Long timeLimit;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime createTime;
+    private Long spaceLimit;
+
+    private String content;
+
+    private String questionCase;
+
+    private String defaultCode;
+
+    private String mainFuc;
 }

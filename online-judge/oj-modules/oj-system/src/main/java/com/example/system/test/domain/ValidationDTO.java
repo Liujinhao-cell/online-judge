@@ -12,7 +12,7 @@ public class ValidationDTO {
     @NotNull(message = "昵称不能为null")
     private String nickName;
 
-    @NotBlank(message = "⽤⼾账号不能为空")
+    @NotBlank(message = "⽤户账号不能为空")
     private String userAccount;
 
     @NotBlank(message = "⽤⼾密码不能为空")
