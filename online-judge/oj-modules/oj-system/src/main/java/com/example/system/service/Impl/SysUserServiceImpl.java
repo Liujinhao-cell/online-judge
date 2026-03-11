@@ -44,14 +44,14 @@ public class SysUserServiceImpl implements SysUserService {
     public R<String> login(String userAccount, String password) {
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
         SysUser sysUser = sysUserMapper.selectOne(queryWrapper
-                .select(SysUser::getPassword,SysUser::getNickName).eq(SysUser::getUserAccount, userAccount));
+                .select(SysUser::getUserId,SysUser::getPassword,SysUser::getNickName).eq(SysUser::getUserAccount, userAccount));
         if(null == sysUser){
             return R.fail(ResultCode.FAILED_USER_NOT_EXISTS);
         }
         if(!BCryptUtils.matchesPassword(password,sysUser.getPassword())){
             return R.fail(ResultCode.FAILED_LOGIN);
         }
-        System.out.println(sysUser.getUserId());
+//        System.out.println(sysUser.getUserId());
         //生成jwt令牌的方法
         String token = tokenService.createToken(sysUser.getUserId(),
                 secret, UserIdentity.ADMIN.getValue(),sysUser.getNickName());

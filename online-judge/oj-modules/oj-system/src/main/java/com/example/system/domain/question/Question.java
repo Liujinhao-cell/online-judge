@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.common.core.domain.BaseEntity;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @TableName("tb_question")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Question extends BaseEntity {
 
     @TableId(type = IdType.ASSIGN_ID)

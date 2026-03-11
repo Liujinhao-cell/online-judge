@@ -24,14 +24,14 @@ public class TokenService {
     private RedisService redisService;
 
     public String createToken(Long userId, String secret, Integer identity,String nickName) {
-//        if (userId == null) {
-//            log.error("创建token失败：userId不能为空");
-//            throw new IllegalArgumentException("userId不能为空");
-//        }
-//        if (StrUtil.isEmpty(secret)) {
-//            log.error("创建token失败：secret不能为空");
-//            throw new IllegalArgumentException("secret不能为空");
-//        }
+        if (userId == null) {
+            log.error("创建token失败：userId不能为空");
+            throw new IllegalArgumentException("userId不能为空");
+        }
+        if (StrUtil.isEmpty(secret)) {
+            log.error("创建token失败：secret不能为空");
+            throw new IllegalArgumentException("secret不能为空");
+        }
         //生成jwt令牌的方法
         Map<String, Object> claims = new HashMap<>();
         String userKey = UUID.fastUUID().toString();

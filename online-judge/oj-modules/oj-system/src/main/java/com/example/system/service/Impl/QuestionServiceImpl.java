@@ -46,12 +46,12 @@ public class QuestionServiceImpl implements QuestionService {
         }
         Question question = new Question();
         BeanUtil.copyProperties(questionAddDTO,question);
-        // 兜底默认值：如果参数没传，设置默认值避免数据库非空报错
+        // 兜底默认值
         if (question.getTimeLimit() == null) {
             question.setTimeLimit(10000L); // 默认10秒
         }
         if (question.getSpaceLimit() == null) {
-            question.setSpaceLimit(256L); // 默认256KB
+            question.setSpaceLimit(256L); // 默认256MB
         }
         return questionMapper.insert(question);
     }

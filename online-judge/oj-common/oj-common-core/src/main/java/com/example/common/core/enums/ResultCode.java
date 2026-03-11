@@ -26,8 +26,14 @@ public enum ResultCode {
     AILED_USER_EXISTS(3101, "⽤户已存在"),
     FAILED_USER_NOT_EXISTS(3102, "⽤户不存在"),
     FAILED_LOGIN(3103, "⽤户名或密码错误"),
-    FAILED_USER_BANNED(3104, "您已被列⼊⿊名单, 请联系管理员.");
+    FAILED_USER_BANNED(3104, "您已被列⼊⿊名单, 请联系管理员."),
 
+    EXAM_START_TIME_BEFORE_CURRENT_TIME(3201,"竞赛时间不能早于当前时间"),
+    EXAM_START_TIME_AFTER_END_TIME(3202,"竞赛时间不能晚于开始时间"),
+    EXAM_NOT_EXISTS(3203, "竞赛不存在"),
+    EXAM_QUESTION_NOT_EXISTS(3204,"为竞赛新增的题目不存在"),
+    QUESTION_ALREADY_IN_EXAM(3205,"部分题目已在竞赛中，请勿重复添加"),
+    EXAM_ALREADY_STARTED_QUESTION_CAN_NOT_ADD(3206,"竞赛已开始，不能添加题目");
     /**
      * 状态码
      */
