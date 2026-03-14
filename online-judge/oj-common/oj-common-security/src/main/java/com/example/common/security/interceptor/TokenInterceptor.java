@@ -25,6 +25,9 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = getToken(request);
+        if(StrUtil.isEmpty(token)){
+            return true;
+        }
         //token有效时间的延长
         tokenService.extendToken(token,secret);
         //放行

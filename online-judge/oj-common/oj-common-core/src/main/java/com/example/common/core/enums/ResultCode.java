@@ -15,7 +15,7 @@ public enum ResultCode {
     SUCCESS(1000, "操作成功"),
     //服务器内部错误，友好提⽰
     ERROR(2000, "服务繁忙请稍后重试"),
-
+    HANDLE_METHOD_ARGUMENT_TYPE_MISMATCH(2001,"参数类型转换异常"),
     //操作失败，但是服务器不存在异常
     FAILED(3000, "操作失败"),
     FAILED_UNAUTHORIZED(3001, "未授权"),
@@ -27,13 +27,18 @@ public enum ResultCode {
     FAILED_USER_NOT_EXISTS(3102, "⽤户不存在"),
     FAILED_LOGIN(3103, "⽤户名或密码错误"),
     FAILED_USER_BANNED(3104, "您已被列⼊⿊名单, 请联系管理员."),
+    FAILED_USER_PHONE(3105,"您输入的手机号有误"),
+    FAILED_USER_EMAIL(3106,"您输入的邮箱有误"),
+    FAILED_TOO_FREQUENT(3107,"验证码发送过于频繁"),
 
     EXAM_START_TIME_BEFORE_CURRENT_TIME(3201,"竞赛时间不能早于当前时间"),
     EXAM_START_TIME_AFTER_END_TIME(3202,"竞赛时间不能晚于开始时间"),
     EXAM_NOT_EXISTS(3203, "竞赛不存在"),
     EXAM_QUESTION_NOT_EXISTS(3204,"为竞赛新增的题目不存在"),
-    QUESTION_ALREADY_IN_EXAM(3205,"部分题目已在竞赛中，请勿重复添加"),
-    EXAM_ALREADY_STARTED_QUESTION_CAN_NOT_ADD(3206,"竞赛已开始，不能添加题目");
+    EXAM_STARTED(3205,"竞赛已经开始，不能操作"),
+    EXAM_NOT_HAS_QUESTION(3206,"竞赛中不包含题目"),
+    QUESTION_ALREADY_IN_EXAM(3207,"部分题目已在竞赛中，请勿重复添加"),
+    EXAM_ALREADY_STARTED_QUESTION_CAN_NOT_ADD(3208,"竞赛已开始，不能添加题目");
     /**
      * 状态码
      */

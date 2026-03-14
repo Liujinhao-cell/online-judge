@@ -15,11 +15,14 @@ public class QuestionQueryDTO extends PageQueryDTO {
      * 标题
      */
     private String title;
-
     /**
      *难度
      */
     private Integer difficulty;
+    /**
+     * 排除的ID字符串 用;分隔
+     */
+    private String excludeIdStr;
     /**
      * 需要排除的ID集合（用于排除已选择的题目等场景）
      */

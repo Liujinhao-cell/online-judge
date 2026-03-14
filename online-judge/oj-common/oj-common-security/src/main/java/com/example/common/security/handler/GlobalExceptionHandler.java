@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
@@ -44,10 +46,29 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public R<?> handleServiceException(ServiceException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
+        // 获取异常信息
+        Integer code = e.getCode();
+        String message = e.getMessage();
+        log.error("请求地址'{}',发⽣业务异常: code={}, message={}", requestURI, code, message, e);
+        // 如果有code，使用code和message返回
+        if (code != null) {
+            return R.fail(code, message);
+        }
+        // 如果有resultCode，使用resultCode返回
         ResultCode resultCode = e.getResultCode();
-        log.error("请求地址'{}',发⽣业务异常:{}", requestURI,resultCode.getMsg(), e);
-        return R.fail(resultCode);
+        if (resultCode != null) {
+            return R.fail(resultCode);
+        }
+        // 默认返回系统错误
+        return R.fail(ResultCode.ERROR);
     }
+//    @ExceptionHandler(ServiceException.class)
+//    public R<?> handleServiceException(ServiceException e, HttpServletRequest request) {
+//        String requestURI = request.getRequestURI();
+//        ResultCode resultCode = e.getResultCode();
+//        log.error("请求地址'{}',发⽣业务异常:{}", requestURI,resultCode.getMsg(), e);
+//        return R.fail(resultCode);
+//    }
 
     /**
      * 参数校验时异常
@@ -59,6 +80,13 @@ public class GlobalExceptionHandler {
         log.error(e.getMessage());
         String message = join(e.getAllErrors(), DefaultMessageSourceResolvable::getDefaultMessage, ", ");
         return R.fail(ResultCode.FAILED_PARAMS_VALIDATE.getCode(), message);
+    }
+
+    // 处理参数类型转换异常
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public R<Void> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e) {
+        String msg = String.format("参数 '%s' 类型错误，期望类型为 %s", e.getName(), e.getRequiredType().getSimpleName());
+        return R.fail(ResultCode.HANDLE_METHOD_ARGUMENT_TYPE_MISMATCH.getCode(),msg);  // 返回自定义错误对象
     }
 
     private <E> String join(Collection<E> collection, Function<E, String> function, CharSequence delimiter) {
