@@ -7,10 +7,43 @@
 - ✅ 全容器化部署（HTTPS公网访问）
 
 **每日日志**（每天更新）：
-👉 [Issues](https://github.com/你的用户名/online-judge-30days/issues) 按时间倒序
+👉 [Issues](https://gitee.com/liu-jinhao-C/online-judge-30days/issues) 按时间倒序
 
 **项目演示**：
 🔗 （3月20日上线后更新）
 
 **关于我**：
-某双非大三学生，2026届，正在找暑期实习。
+某大三学生，2027届，正在找实习。
+📖 项目简介
+沙箱判官是一个对标 LeetCode 的在线代码评测平台，支持用户注册登录、题目管理、代码提交、自动判题以及竞赛排名。项目核心挑战在于保证判题结果的准确性以及代码运行环境的安全隔离。
+项目名称寓意：像“判官”一样公正评判每一段代码，同时用“沙箱”技术守护系统安全。
+✨ 在线体验
+C端后台判题系统：http://xxx.xxx.xxx.xxx （待部署）
+B端后台管理系统：http://xxx.xxx.xxx.xxx/swagger-ui.html （待部署）
+后台管理系统测试账号：admin / 123456
+
+🎯 核心功能
+模块	功能说明	状态
+用户模块	注册/登录、个人信息管理、提交记录查询	✅ 已完成
+题目模块	题目列表、题目详情、标签分类、难度分级	✅ 已完成
+判题模块	代码提交、实时判题、结果反馈、错误信息提示	🚧 开发中
+竞赛模块	创建竞赛、实时排名、防作弊检测	🚧 开发中
+管理后台	题目管理、测试用例管理、用户管理	✅ 已完成
+多语言支持	Java、Python、Go、C++	🚧 开发中
+🛠️ 技术栈
+后端
+技术	
+Spring Boot	
+Spring MVC	
+MyBatis	
+MySQL	
+Redis	
+RabbitMQ	
+Docker	
+Maven	
+前端
+技术	
+Vue	
+Element Plus	
+Axios	
+WebSocket
