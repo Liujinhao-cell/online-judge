@@ -1,4 +1,4 @@
-package com.example.friend.domain;
+package com.example.friend.domain.user;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     /**
      * 手机号
      */
-    private String phone;
+    private String phone = "";
 
     /**
      * 验证码

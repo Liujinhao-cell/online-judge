@@ -23,7 +23,7 @@ public class TokenService {
     @Autowired
     private RedisService redisService;
 
-    public String createToken(Long userId, String secret, Integer identity,String nickName) {
+    public String createToken(Long userId, String secret, Integer identity,String nickName,String headImage) {
         if (userId == null) {
             log.error("创建token失败：userId不能为空");
             throw new IllegalArgumentException("userId不能为空");
@@ -45,6 +45,7 @@ public class TokenService {
         LoginUser loginUser = new LoginUser();
         loginUser.setIdentity(identity);
         loginUser.setNickName(nickName);
+        loginUser.setHeadImage(headImage);
         redisService.setCacheObject(tokenKey, loginUser, CacheConstants.EXP, TimeUnit.MINUTES);
         return token;
     }
@@ -53,9 +54,10 @@ public class TokenService {
      * 延长Token的有效时间：延长redis中存储用于用户身份认证的有效时间
      * 身份认证后进行，请求到达Controller之前
      *
-     * @param token JWT令牌
+     * @param token 令牌
+     * @param secret 密钥
      */
-    public void extendToken(String token, String secret) {
+    public void extendToken(String token,String secret) {
 //        Claims claims;
 //        try {
 //            claims = JwtUtils.parseToken(token, secret); //获取令牌中信息 解析payload中信息
@@ -122,7 +124,22 @@ public class TokenService {
         }
         return StrUtil.isEmpty(token) ? null : token;
     }
+
+    public Long getUserId(Claims claims){
+        if (claims == null) return null;
+        return Long.valueOf(JwtUtils.getUserId(claims)); //获取jwt中的key
+    }
+    private String getUserKey(Claims claims) {
+        if (claims == null) return null;
+        return JwtUtils.getUserKey(claims); //获取jwt中的key
+    }
     private String getUserKey(String token, String secret) {
+        Claims claims = getClaims(token, secret);
+        if (claims == null) return null;
+        return JwtUtils.getUserKey(claims); //获取jwt中的key
+    }
+
+    public Claims getClaims(String token, String secret) {
         Claims claims;
         try {
             claims = JwtUtils.parseToken(token, secret); //获取令牌中信息 解析payload中信息
@@ -134,7 +151,7 @@ public class TokenService {
             log.error("解析token:{},出现异常", token, e);
             return null;
         }
-        return JwtUtils.getUserKey(claims); //获取jwt中的key
+        return claims;
     }
 
 }

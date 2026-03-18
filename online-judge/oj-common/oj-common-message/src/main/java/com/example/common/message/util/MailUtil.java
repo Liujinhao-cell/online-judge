@@ -97,11 +97,11 @@ public class MailUtil {
         // 发送邮件
         sendSimpleMail(email, subject, content);
         
-        // 存储验证码到Redis（可选）
-        if (redisTemplate != null) {
-            String key = "verify:code:" + email;
-            redisTemplate.opsForValue().set(key, code, expireTime, TimeUnit.SECONDS);
-        }
+        // 存储验证码到Redis
+//        if (redisTemplate != null) {
+//            String key = "verify:code:" + email;
+//            redisTemplate.opsForValue().set(key, code, expireTime, TimeUnit.SECONDS);
+//        }
         return code;
     }
     
@@ -122,10 +122,10 @@ public class MailUtil {
         sendSimpleMail(email, subject, content);
         
         // 存储验证码到Redis
-        if (redisTemplate != null) {
-            String key = "verify:code:" + email;
-            redisTemplate.opsForValue().set(key, code, expireSeconds, TimeUnit.SECONDS);
-        }
+//        if (redisTemplate != null) {
+//            String key = "verify:code:" + email;
+//            redisTemplate.opsForValue().set(key, code, expireSeconds, TimeUnit.SECONDS);
+//        }
         
         return code;
     }

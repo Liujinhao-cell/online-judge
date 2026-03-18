@@ -2,6 +2,7 @@ package com.example.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
+import com.example.common.core.constants.Constants;
 import com.example.common.core.utils.JwtUtils;
 import com.example.common.core.constants.CacheConstants;
 import com.example.common.core.constants.HttpConstants;
@@ -9,6 +10,7 @@ import com.example.common.core.domain.LoginUser;
 import com.example.common.core.domain.R;
 import com.example.common.core.enums.ResultCode;
 import com.example.common.core.enums.UserIdentity;
+import com.example.common.core.utils.ThreadLocalUtil;
 import com.example.common.redis.service.RedisService;
 import com.example.gateway.properties.IgnoreWhiteProperties;
 import io.jsonwebtoken.Claims;
@@ -101,8 +103,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (url.contains(HttpConstants.FRIEND_URL_PREFIX) && !UserIdentity.ORDINARY.getValue().equals(user.getIdentity())) {
             return unauthorizedResponse(exchange, "令牌验证失败");
         }
-
-
+//        ThreadLocalUtil.set(Constants.USER_ID,userId);
         return chain.filter(exchange);
     }
 

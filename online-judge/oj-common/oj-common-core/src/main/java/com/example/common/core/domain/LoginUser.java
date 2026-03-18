@@ -14,4 +14,8 @@ public class LoginUser {
      */
     private String nickName;
 
+    /**
+     *头像
+     */
+    private String headImage;
 }

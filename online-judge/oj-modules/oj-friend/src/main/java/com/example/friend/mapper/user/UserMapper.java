@@ -1,7 +1,7 @@
-package com.example.friend.mapper;
+package com.example.friend.mapper.user;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.friend.domain.User;
+import com.example.friend.domain.user.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

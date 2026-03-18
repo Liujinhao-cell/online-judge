@@ -1,4 +1,4 @@
-package com.example.friend.domain.dto;
+package com.example.friend.domain.user.dto;
 
 import lombok.Data;
 
@@ -8,6 +8,10 @@ public class UserDTO {
      * 邮箱
      */
     private String email;
+    /**
+     * 验证码
+     */
+    private String code;
 }
 /**
  *手机号

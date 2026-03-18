@@ -1,10 +1,14 @@
 package com.example.common.security.interceptor;
 
 import cn.hutool.core.util.StrUtil;
+import com.example.common.core.constants.Constants;
 import com.example.common.core.constants.HttpConstants;
+import com.example.common.core.utils.ThreadLocalUtil;
 import com.example.common.security.service.TokenService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -14,6 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
+@Slf4j
 public class TokenInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -24,10 +29,15 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String secret;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info("========== TokenInterceptor 执行 ==========");
         String token = getToken(request);
         if(StrUtil.isEmpty(token)){
             return true;
         }
+        //存储userid
+        Claims claims = tokenService.getClaims(token, secret);
+        Long userId = tokenService.getUserId(claims);
+        ThreadLocalUtil.set(Constants.USER_ID,userId);
         //token有效时间的延长
         tokenService.extendToken(token,secret);
         //放行

@@ -54,7 +54,7 @@ public class SysUserServiceImpl implements SysUserService {
 //        System.out.println(sysUser.getUserId());
         //生成jwt令牌的方法
         String token = tokenService.createToken(sysUser.getUserId(),
-                secret, UserIdentity.ADMIN.getValue(),sysUser.getNickName());
+                secret, UserIdentity.ADMIN.getValue(),sysUser.getNickName(),null);
         return R.ok(token);
     }
 
