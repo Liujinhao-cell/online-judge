@@ -17,9 +17,10 @@ import com.example.friend.domain.exam.dto.ExamQueryDTO;
 //import com.example.friend.domain.exam.vo.ExamRankVO;
 import com.example.friend.domain.exam.vo.ExamVO;
 //import com.example.friend.domain.user.UserExam;
+import com.example.friend.domain.user.UserExam;
 import com.example.friend.mapper.exam.ExamMapper;
 //import com.example.friend.mapper.exam.ExamQuestionMapper;
-//import com.example.friend.mapper.user.UserExamMapper;
+//import com.example.friend.mapper.user.UserExamMapper.xml;
 import com.example.friend.mapper.user.UserExamMapper;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,21 +90,23 @@ public class ExamCacheManager {
 //        return redisService.getCacheListByRange(getExamRankListKey(examRankDTO.getExamId()), start, end, ExamRankVO.class);
 //    }
 //
-//    public List<Long> getAllUserExamList(Long userId) {
-//        String examListKey = CacheConstants.USER_EXAM_LIST + userId;
-//        List<Long> userExamIdList = redisService.getCacheListByRange(examListKey, 0, -1, Long.class);
-//        if (CollectionUtil.isNotEmpty(userExamIdList)) {
-//            return userExamIdList;
-//        }
-//        List<UserExam> userExamList =
-//                userExamMapper.selectList(new LambdaQueryWrapper<UserExam>().eq(UserExam::getUserId, userId));
-//        if (CollectionUtil.isEmpty(userExamList)) {
-//            return null;
-//        }
-//        refreshCache(ExamListType.USER_EXAM_LIST.getValue(), userId);
-//        return userExamList.stream().map(UserExam::getExamId).collect(Collectors.toList());
-//    }
-//
+    public List<Long> getAllUserExamList(Long userId) {
+        String examListKey = CacheConstants.USER_EXAM_LIST + userId;
+        List<Long> userExamIdList = redisService.getCacheListByRange(examListKey, 0, -1, Long.class);
+        if (CollectionUtil.isNotEmpty(userExamIdList)) {
+            return userExamIdList;
+        }
+        //examId为空
+        //数据库中查询
+        List<UserExam> userExamList =
+                userExamMapper.selectList(new LambdaQueryWrapper<UserExam>().eq(UserExam::getUserId, userId));
+        if (CollectionUtil.isEmpty(userExamList)) {
+            return null;
+        }
+        refreshCache(ExamListType.USER_EXAM_LIST.getValue(), userId);
+        return userExamList.stream().map(UserExam::getExamId).collect(Collectors.toList());
+    }
+
     public void addUserExamCache(Long userId, Long examId) {
         String userExamListKey = getUserExamListKey(userId);
         redisService.leftPushForList(userExamListKey, examId);
@@ -149,6 +152,7 @@ public class ExamCacheManager {
                     .orderByDesc(Exam::getCreateTime));
         } else if (ExamListType.USER_EXAM_LIST.getValue().equals(examListType)) {
             List<ExamVO> examVOList = userExamMapper.selectUserExamList(userId);
+            //ExamVO -> ExamList
             examList = BeanUtil.copyToList(examVOList, Exam.class);
         }
         //缓存存放

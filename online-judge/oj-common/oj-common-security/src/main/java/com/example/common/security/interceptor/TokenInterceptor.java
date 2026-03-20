@@ -27,19 +27,20 @@ public class TokenInterceptor implements HandlerInterceptor {
     //从哪个服务的配置文件中去读取，bean会交给哪个服务的spring容器去管理
     @Value("${jwt.secret}")
     private String secret;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("========== TokenInterceptor 执行 ==========");
         String token = getToken(request);
-        if(StrUtil.isEmpty(token)){
+        if (StrUtil.isEmpty(token)) {
             return true;
         }
         //存储userid
         Claims claims = tokenService.getClaims(token, secret);
         Long userId = tokenService.getUserId(claims);
-        ThreadLocalUtil.set(Constants.USER_ID,userId);
+        ThreadLocalUtil.set(Constants.USER_ID, userId);
         //token有效时间的延长
-        tokenService.extendToken(token,secret);
+        tokenService.extendToken(token, secret);
         //放行
         return true;
     }
@@ -53,5 +54,9 @@ public class TokenInterceptor implements HandlerInterceptor {
             token = token.replaceFirst(HttpConstants.PREFIX, StrUtil.EMPTY);
         }
         return token;
+    }
+
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
+        ThreadLocalUtil.remove();
     }
 }

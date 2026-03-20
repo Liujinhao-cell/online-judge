@@ -30,4 +30,9 @@ public class ExamVO {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime endTime;
+
+    /**
+     *报名情况 true 已报名 false 未报名
+     */
+    private boolean enter;
 }

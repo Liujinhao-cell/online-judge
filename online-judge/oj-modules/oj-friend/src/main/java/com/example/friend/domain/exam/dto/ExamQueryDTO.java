@@ -24,4 +24,5 @@ public class ExamQueryDTO extends PageQueryDTO {
      *  0 未完赛 1 历史
      */
     private Integer type;
+
 }
