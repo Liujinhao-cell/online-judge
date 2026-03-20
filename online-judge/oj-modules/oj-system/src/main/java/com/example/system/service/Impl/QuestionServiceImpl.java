@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.common.core.constants.Constants;
 import com.example.common.core.domain.TableDataInfo;
 import com.example.common.core.enums.ResultCode;
+import com.example.common.core.utils.ThreadLocalUtil;
 import com.example.common.security.exception.ServiceException;
 import com.example.system.domain.question.Question;
 import com.example.system.domain.question.dto.QuestionAddDTO;
@@ -122,7 +123,7 @@ public class QuestionServiceImpl implements QuestionService {
     private Long getCurrentUserId() {
         // 从 SecurityContext 获取当前用户ID
         // return SecurityUtils.getCurrentUserId();
-        return 2029939600112037890L; // 临时使用默认值
+        return ThreadLocalUtil.get(Constants.USER_ID, Long.class); // 临时使用默认值
     }
 
     @Override
