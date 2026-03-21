@@ -10,7 +10,7 @@
 👉 [Issues](https://gitee.com/liu-jinhao-C/online-judge-30days/issues) 按时间倒序
 
 **项目演示**：
-🔗 （3月20日上线后更新）
+🔗 （3月23日上线后更新）
 
 **关于我**：
 某大三学生，2027届，正在找实习。
@@ -20,7 +20,7 @@
 ✨ 在线体验
 C端后台判题系统：http://xxx.xxx.xxx.xxx （待部署）
 B端后台管理系统：http://xxx.xxx.xxx.xxx/swagger-ui.html （待部署）
-后台管理系统测试账号：admin / 123456
+后台管理系统测试账号：admin@123 / 123456
 
 🎯 核心功能
 模块	功能说明	状态
