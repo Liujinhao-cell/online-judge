@@ -1,0 +1,42 @@
+package com.example.friend.domain.question;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.common.core.domain.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@TableName("tb_question")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Question extends BaseEntity {
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long questionId;
+
+    private String title;
+
+    private Integer difficulty;
+
+    @TableField("time_limit")
+    private Long timeLimit;
+
+    @TableField("space_limit")
+    private Long spaceLimit;
+
+    private String content;
+
+    @TableField("question_case")
+    private String questionCase;
+
+    @TableField("default_code")
+    private String defaultCode;
+
+    @TableField("main_fuc")
+    private String mainFuc;
+}
+

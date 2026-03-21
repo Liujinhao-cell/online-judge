@@ -14,8 +14,10 @@ import com.example.system.domain.question.Question;
 import com.example.system.domain.question.dto.QuestionAddDTO;
 import com.example.system.domain.question.dto.QuestionEditDTO;
 import com.example.system.domain.question.dto.QuestionQueryDTO;
+import com.example.system.domain.question.es.QuestionES;
 import com.example.system.domain.question.vo.QuestionDetailVO;
 import com.example.system.domain.question.vo.QuestionVO;
+import com.example.system.mapper.elasticsearch.QuestionRepository;
 import com.example.system.mapper.question.QuestionMapper;
 import com.example.system.service.question.QuestionService;
 import com.github.pagehelper.Page;
@@ -35,7 +37,8 @@ import java.util.stream.Collectors;
 public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
-
+    @Autowired
+    private QuestionRepository questionRepository;
     @Override
     public List<QuestionVO> list(QuestionQueryDTO questionQueryDTO) {
         String excludeIdStr = questionQueryDTO.getExcludeIdStr();
@@ -52,7 +55,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public int add(QuestionAddDTO questionAddDTO) {
+    public boolean add(QuestionAddDTO questionAddDTO) {
         List<Question> questionList = questionMapper.selectList(new LambdaQueryWrapper<Question>()
                 .eq(Question::getTitle, questionAddDTO.getTitle()));
         if(CollectionUtil.isNotEmpty(questionList)){
@@ -68,7 +71,15 @@ public class QuestionServiceImpl implements QuestionService {
         if (question.getSpaceLimit() == null) {
             question.setSpaceLimit(256L); // 默认256MB
         }
-        return questionMapper.insert(question);
+        int row = questionMapper.insert(question);
+        if(row <= 0){
+            return false;
+        }
+        //操作ES
+        QuestionES questionES = new QuestionES();
+        BeanUtil.copyProperties(question,questionES);
+        questionRepository.save(questionES);
+        return true;
     }
 
     @Override
@@ -116,19 +127,20 @@ public class QuestionServiceImpl implements QuestionService {
 
         oldQuestion.setUpdateTime(LocalDateTime.now());
         oldQuestion.setUpdateBy(getCurrentUserId()); // 需要实现获取当前用户ID的方法
-
+        QuestionES questionES = new QuestionES();
+        BeanUtil.copyProperties(oldQuestion,questionES);
+        questionRepository.save(questionES);
         return questionMapper.updateById(oldQuestion);
     }
     // 获取当前用户ID的方法
     private Long getCurrentUserId() {
-        // 从 SecurityContext 获取当前用户ID
-        // return SecurityUtils.getCurrentUserId();
-        return ThreadLocalUtil.get(Constants.USER_ID, Long.class); // 临时使用默认值
+        return ThreadLocalUtil.get(Constants.USER_ID, Long.class);
     }
 
     @Override
     public int delete(Long questionId) {
         extracted(questionId);
+        questionRepository.deleteById(questionId);
         return questionMapper.deleteById(questionId);
     }
 

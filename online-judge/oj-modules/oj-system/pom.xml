@@ -45,5 +45,10 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.22</version>
         </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>oj-common-elsticsearch</artifactId>
+            <version>${oj-common-elsticsearch.version}</version>
+        </dependency>
     </dependencies>
 </project>

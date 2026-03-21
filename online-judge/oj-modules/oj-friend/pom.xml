@@ -44,5 +44,10 @@
             <artifactId>oj-common-message</artifactId>
             <version>${oj-common-message.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>oj-common-elsticsearch</artifactId>
+            <version>${oj-common-elsticsearch.version}</version>
+        </dependency>
     </dependencies>
 </project>
