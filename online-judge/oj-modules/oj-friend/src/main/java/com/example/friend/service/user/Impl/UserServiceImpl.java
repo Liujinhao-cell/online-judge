@@ -13,12 +13,16 @@ import com.example.common.core.enums.ResultCode;
 import com.example.common.core.enums.UserIdentity;
 import com.example.common.core.enums.UserStatus;
 import com.example.common.core.utils.RegexUtil;
+import com.example.common.core.utils.ThreadLocalUtil;
 import com.example.common.message.util.MailUtil;
 import com.example.common.redis.service.RedisService;
 import com.example.common.security.exception.ServiceException;
 import com.example.common.security.service.TokenService;
 import com.example.friend.domain.user.User;
 import com.example.friend.domain.user.dto.UserDTO;
+import com.example.friend.domain.user.dto.UserUpdateDTO;
+import com.example.friend.domain.user.vo.UserVO;
+import com.example.friend.manager.UserCacheManager;
 import com.example.friend.mapper.user.UserMapper;
 import com.example.friend.service.user.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +50,9 @@ public class UserServiceImpl implements IUserService {
     private TokenService tokenService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private UserCacheManager userCacheManager;
+    
     @Value("${mail.verify.expire-time:300}")
     private long expireTime;
     @Value("${mail.verify.frequency:60}")
@@ -56,6 +63,9 @@ public class UserServiceImpl implements IUserService {
     private String secret;
     @Value("${mail.is-send:false}")
     private boolean isSend; //开关
+
+    @Value("${file.oss.downloadUrl}")
+    private String downloadUrl;
     @Override
     public void sendCode(UserDTO userDTO) {
         String email = userDTO.getEmail();
@@ -156,8 +166,69 @@ public class UserServiceImpl implements IUserService {
         }
         LoginUserVO loginUserVO = new LoginUserVO();
         loginUserVO.setNickName(loginUser.getNickName());
-        loginUserVO.setHeadImage(loginUser.getHeadImage());
+        if(StrUtil.isNotEmpty(loginUserVO.getHeadImage())) {
+            loginUserVO.setHeadImage(downloadUrl + loginUser.getHeadImage());
+        }
         return R.ok(loginUserVO);
+    }
+
+    @Override
+    public UserVO detail() {
+        Long userId = ThreadLocalUtil.get(Constants.USER_ID, Long.class);
+        if(null == userId){
+            throw new ServiceException(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        UserVO userVO = userCacheManager.getUserId(userId);
+        if(null == userVO){
+            throw new ServiceException(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        if(StrUtil.isNotEmpty(userVO.getHeadImage())) {
+            userVO.setHeadImage(downloadUrl + userVO.getHeadImage());
+        }
+        return userVO;
+    }
+
+    @Override
+    public int edit(UserUpdateDTO userUpdateDTO) {
+        Long userId = ThreadLocalUtil.get(Constants.USER_ID, Long.class);
+        if(null == userId){
+            throw new ServiceException(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        User user = userMapper.selectById(userId);
+        if(null == user){
+            throw new ServiceException(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        user.setNickName(userUpdateDTO.getNickName());
+        user.setSex(userUpdateDTO.getSex());
+        user.setPhone(userUpdateDTO.getPhone());
+        user.setEmail(userUpdateDTO.getEmail());
+        user.setWechat(userUpdateDTO.getWechat());
+        user.setSchoolName(userUpdateDTO.getSchoolName());
+        user.setMajorName(userUpdateDTO.getMajorName());
+        user.setIntroduce(userUpdateDTO.getIntroduce());
+        //更新用户缓存
+        userCacheManager.refreshUser(user);
+        tokenService.refreshLoginUser(user.getNickName(),user.getHeadImage(),
+                ThreadLocalUtil.get(Constants.USER_KEY,String.class));
+        return userMapper.updateById(user);
+    }
+
+    @Override
+    public int updateHeadImage(String headImage) {
+        Long userId = ThreadLocalUtil.get(Constants.USER_ID, Long.class);
+        if(null == userId){
+            throw new ServiceException(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        User user = userMapper.selectById(userId);
+        if(null == user){
+            throw new ServiceException(ResultCode.FAILED_USER_NOT_EXISTS);
+        }
+        user.setHeadImage(headImage);
+        //更新用户缓存
+        userCacheManager.refreshUser(user);
+        tokenService.refreshLoginUser(user.getNickName(),user.getHeadImage(),
+                ThreadLocalUtil.get(Constants.USER_KEY,String.class));
+        return userMapper.updateById(user);
     }
 
     private void checkCode(String email, String code) {

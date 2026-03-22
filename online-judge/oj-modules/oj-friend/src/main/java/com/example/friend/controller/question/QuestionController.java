@@ -1,8 +1,10 @@
 package com.example.friend.controller.question;
 
 import com.example.common.core.controller.BaseController;
+import com.example.common.core.domain.R;
 import com.example.common.core.domain.TableDataInfo;
 import com.example.friend.domain.question.dto.QuestionQueryDTO;
+import com.example.friend.domain.question.vo.QuestionDetailVO;
 import com.example.friend.mapper.question.QuestionMapper;
 import com.example.friend.service.question.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +21,10 @@ public class QuestionController extends BaseController {
     @GetMapping("/semiLogin/list")
         public TableDataInfo list(QuestionQueryDTO questionQueryDTO){
             return questionService.list(questionQueryDTO);
+    }
+
+    @GetMapping("/detail")
+    public R<QuestionDetailVO> detail(Long questionId){
+        return R.ok(questionService.detail(questionId));
     }
 }

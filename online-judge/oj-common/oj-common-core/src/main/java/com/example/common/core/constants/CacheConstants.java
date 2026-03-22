@@ -11,8 +11,14 @@ public class CacheConstants {
     public static final String EXAM_UNFINISHED_LIST = "e:t:l"; //未完赛竞赛列表
     public static final String EXAM_HISTORY_LIST = "e:h:l";//历史竞赛列表
 
-    public static final String EXAM_DETAIL = "e:d:"; //竞赛详析信息
+    public static final String EXAM_DETAIL = "e:d:"; //竞赛详情信息
 
     public static final String USER_EXAM_LIST = "u:e:l"; //用户竞赛列表
+
+    public static final String USER_DETAIL = "u:d:";//用户详情信息
+
+    public static final long USER_EXP = 10;
+
+    public static final String USER_UPLOAD_TIMES_KEY = "u:u:t:k";
 
 }

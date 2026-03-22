@@ -5,6 +5,8 @@ import com.example.common.core.controller.BaseController;
 import com.example.common.core.domain.R;
 import com.example.common.core.domain.vo.LoginUserVO;
 import com.example.friend.domain.user.dto.UserDTO;
+import com.example.friend.domain.user.dto.UserUpdateDTO;
+import com.example.friend.domain.user.vo.UserVO;
 import com.example.friend.service.user.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,5 +50,31 @@ public class UserController extends BaseController {
     @ApiResponse(responseCode = "2000", description = "服务器繁忙，请稍后重试")
     public R<LoginUserVO> info(@RequestHeader(HttpConstants.AUTHENTICATION) String token){
         return userService.info(token);
+    }
+
+    /**
+     *
+     * @return {@link R }<{@link UserVO }>
+     */
+    @GetMapping("/detail")
+    @Operation(summary = "用户详细信息", description = "根据token来获取用户详细信息")
+    @ApiResponse(responseCode = "1000", description = "操作成功")
+    @ApiResponse(responseCode = "2000", description = "服务器繁忙，请稍后重试")
+    public R<UserVO> detail(){
+        return R.ok(userService.detail());
+    }
+
+    @PutMapping("/edit")
+    @Operation(summary = "编辑用户信息", description = "根据传入的数据更新用户信息")
+    @ApiResponse(responseCode = "1000", description = "操作成功")
+    @ApiResponse(responseCode = "2000", description = "服务器繁忙，请稍后重试")
+    public R<Void> edit(@RequestBody UserUpdateDTO userUpdateDTO){
+        return toResult(userService.edit(userUpdateDTO));
+    }
+
+    @PutMapping("/head-image/update")
+    @Operation(summary = "头像更新", description = "根据返回的标识确定图片位置")
+    public R<Void> updateHeadImage(@RequestBody UserUpdateDTO userUpdateDTO){
+        return toResult(userService.updateHeadImage(userUpdateDTO.getHeadImage()));
     }
 }

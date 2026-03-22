@@ -44,7 +44,10 @@ public enum ResultCode {
     QUESTION_ALREADY_IN_EXAM(3208,"部分题目已在竞赛中，请勿重复添加"),
     EXAM_ALREADY_STARTED_QUESTION_CAN_NOT_ADD(3209,"竞赛已开始，不能添加题目"),
 
-    USER_EXAM_HAS_ENTER(3301,"用户已经报过名，无需报名");
+    USER_EXAM_HAS_ENTER(3301,"用户已经报过名，无需报名"),
+
+    FAILED_FILE_UPLOAD(3401,"文件上传失败"),
+    FAILED_FILE_UPLOAD_TIME_LIMIT(3402,"当天文件上传次数达到上限");
     /**
      * 状态码
      */

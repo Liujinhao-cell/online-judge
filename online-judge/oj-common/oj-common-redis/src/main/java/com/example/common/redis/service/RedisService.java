@@ -1,6 +1,7 @@
 package com.example.common.redis.service;
 
 import com.alibaba.fastjson2.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class RedisService {
 
     @Autowired
@@ -238,6 +240,47 @@ public class RedisService {
         redisTemplate.opsForHash().put(key, hKey, value);
     }
 
+    /**
+     * 增加Hash中的值（数字类型）
+     * 用于实现计数器功能，如用户上传次数统计
+     *
+     * @param key Redis键，如：CacheConstants.USER_UPLOAD_TIMES_KEY
+     * @param hKey Hash键，如：userId
+     * @param delta 增量，可以是正数或负数
+     * @return 增加后的值
+     *
+     * 使用示例：
+     * // 增加1次上传次数
+     * Long times = redisService.incrementHashValue("user:upload:times", "123", 1);
+     *
+     * // 减少1次上传次数
+     * Long times = redisService.incrementHashValue("user:upload:times", "123", -1);
+     */
+    public Long incrementHashValue(final String key, final String hKey, long delta) {
+        try {
+            // 使用Redis的HINCRBY命令，原子性地增加Hash中指定字段的值
+            Long result = redisTemplate.opsForHash().increment(key, hKey, delta);
+            log.debug("Redis incrementHashValue success: key={}, hKey={}, delta={}, result={}",
+                    key, hKey, delta, result);
+            return result;
+        } catch (Exception e) {
+            log.error("Redis incrementHashValue error: key={}, hKey={}, delta={}, error={}",
+                    key, hKey, delta, e.getMessage());
+            // 返回null表示操作失败，调用方需要处理
+            return null;
+        }
+    }
+
+    /**
+     * 增加Hash中的值（默认增量为1）
+     *
+     * @param key Redis键
+     * @param hKey Hash键
+     * @return 增加后的值
+     */
+    public Long incrementHashValue(final String key, final String hKey) {
+        return incrementHashValue(key, hKey, 1L);
+    }
     /**
      * 缓存Map
      *

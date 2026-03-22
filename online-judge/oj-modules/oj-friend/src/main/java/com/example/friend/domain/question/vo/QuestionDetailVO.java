@@ -6,13 +6,17 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 @Data
-public class QuestionVO {
+public class QuestionDetailVO {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long questionId;
 
     private String title;
 
     private Integer difficulty;
+
+    private String content;
+
+    private String defaultCode;
 
     private Long timeLimit;
 

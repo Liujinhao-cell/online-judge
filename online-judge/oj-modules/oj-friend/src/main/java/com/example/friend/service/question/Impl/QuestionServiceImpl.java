@@ -8,6 +8,7 @@ import com.example.common.core.domain.TableDataInfo;
 import com.example.friend.domain.question.Question;
 import com.example.friend.domain.question.dto.QuestionQueryDTO;
 import com.example.friend.domain.question.es.QuestionES;
+import com.example.friend.domain.question.vo.QuestionDetailVO;
 import com.example.friend.domain.question.vo.QuestionVO;
 import com.example.friend.mapper.question.QuestionMapper;
 import com.example.friend.mapper.question.QuestionRepository;
@@ -58,6 +59,24 @@ public class QuestionServiceImpl implements IQuestionService {
         List<QuestionES> content = questionESPage.getContent();
         List<QuestionVO> questionVOList = BeanUtil.copyToList(content, QuestionVO.class);
         return TableDataInfo.success(questionVOList,totalElements);
+    }
+
+    @Override
+    public QuestionDetailVO detail(Long questionId) {
+        QuestionES questionES = questionRepository.findById(questionId).orElse(null);
+        QuestionDetailVO questionDetailVO = new QuestionDetailVO();
+        if(questionES != null){
+            BeanUtil.copyProperties(questionES,questionDetailVO);
+            return questionDetailVO;
+        }
+        Question question = questionMapper.selectById(questionId);
+        if(null == question){
+            return null;
+        }
+        //刷新ES中的数据
+        refreshQuestion();
+        BeanUtil.copyProperties(question,questionDetailVO);
+        return questionDetailVO;
     }
 
     private void refreshQuestion() {
