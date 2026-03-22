@@ -8,4 +8,8 @@ public interface IQuestionService {
     TableDataInfo list(QuestionQueryDTO questionQueryDTO);
 
     QuestionDetailVO detail(Long questionId);
+
+    String preQuestion(Long questionId);
+
+    String nextQuestion(Long questionId);
 }

@@ -47,7 +47,9 @@ public enum ResultCode {
     USER_EXAM_HAS_ENTER(3301,"用户已经报过名，无需报名"),
 
     FAILED_FILE_UPLOAD(3401,"文件上传失败"),
-    FAILED_FILE_UPLOAD_TIME_LIMIT(3402,"当天文件上传次数达到上限");
+    FAILED_FILE_UPLOAD_TIME_LIMIT(3402,"当天文件上传次数达到上限"),
+    FAILED_FIRST_QUESTION(3403,"当前题目已经是第一题了哦！"),
+    FAILED_LAST_QUESTION(3404,"我已经到底了！");
     /**
      * 状态码
      */

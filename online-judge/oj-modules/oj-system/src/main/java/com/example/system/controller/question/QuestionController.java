@@ -10,6 +10,7 @@ import com.example.system.domain.question.vo.QuestionDetailVO;
 import com.example.system.service.question.QuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/question")
 @Tag(name = "题目管理接口")
+@Slf4j
 public class QuestionController extends BaseController {
     @Autowired
     private QuestionService questionService;
@@ -40,6 +42,10 @@ public class QuestionController extends BaseController {
     @PostMapping("/add")
     @Operation(summary = "添加题目", description = "输入信息添加题目")
     public R<Void> add(@RequestBody @Validated QuestionAddDTO questionAddDTO){
+        log.info("接收到的题目数据：timeLimit={}, spaceLimit={}, questionCase={}",
+                questionAddDTO.getTimeLimit(),
+                questionAddDTO.getSpaceLimit(),
+                questionAddDTO.getQuestionCase());
         return toResult(questionService.add(questionAddDTO));
     }
 

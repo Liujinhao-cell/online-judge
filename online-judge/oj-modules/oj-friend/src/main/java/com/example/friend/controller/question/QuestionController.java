@@ -18,13 +18,43 @@ public class QuestionController extends BaseController {
     @Autowired
     private IQuestionService questionService;
 
+    /**
+     * 显示的题目列表
+     * @param questionQueryDTO
+     * @return {@link TableDataInfo }
+     */
     @GetMapping("/semiLogin/list")
         public TableDataInfo list(QuestionQueryDTO questionQueryDTO){
             return questionService.list(questionQueryDTO);
     }
 
+    /**
+     * 答题的相关信息
+     * @param questionId
+     * @return {@link R }<{@link QuestionDetailVO }>
+     */
     @GetMapping("/detail")
     public R<QuestionDetailVO> detail(Long questionId){
         return R.ok(questionService.detail(questionId));
+    }
+
+    /**
+     * redis排序
+     * @param questionId
+     * @return {@link R }<{@link String }>
+     */
+    @GetMapping("/preQuestion")
+    public R<String> preQuestion(Long questionId){
+        return R.ok(questionService.preQuestion(questionId));
+    }
+
+    /**
+     * redis排序
+     * @param questionId
+     * @return {@link R }<{@link String }>
+     */
+    @GetMapping("/nextQuestion")
+    public R<String> nextQuestion(Long questionId){
+        return R.ok(questionService.nextQuestion(questionId));
     }
 }

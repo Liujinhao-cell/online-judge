@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -200,7 +198,24 @@ public class RedisService {
         return redisTemplate.opsForList().remove(key, 1L, value);
     }
 
+    /**
+     * 查询在redis中list的具体位置
+     */
+    public <T> Long indexOfForList(final String key, T value){
+        Long index = redisTemplate.opsForList().indexOf(key,value);
+        if (index == null) {
+            return -1L;  // 返回 -1 表示不存在
+        }
+        return index;
+    }
 
+    /**
+     * 查询指定下标所对应的数据
+     */
+    public <T> T indexForList(final String key, long index, Class<T> clazz){
+        Object o = redisTemplate.opsForList().index(key, index);
+        return JSON.parseObject(String.valueOf(o),clazz);
+    }
     //************************ 操作Hash类型 ***************************
     public <T> T getCacheMapValue(final String key, final String hKey, Class<T> clazz) {
         Object cacheMapValue = redisTemplate.opsForHash().get(key, hKey);

@@ -30,7 +30,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("========== TokenInterceptor 执行 ==========");
+//        log.info("========== TokenInterceptor 执行 ==========");
         String token = getToken(request);
         if (StrUtil.isEmpty(token)) {
             return true;

@@ -17,6 +17,7 @@ import com.example.system.domain.question.dto.QuestionQueryDTO;
 import com.example.system.domain.question.es.QuestionES;
 import com.example.system.domain.question.vo.QuestionDetailVO;
 import com.example.system.domain.question.vo.QuestionVO;
+import com.example.system.manager.QuestionCacheManager;
 import com.example.system.mapper.elasticsearch.QuestionRepository;
 import com.example.system.mapper.question.QuestionMapper;
 import com.example.system.service.question.QuestionService;
@@ -39,6 +40,8 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private QuestionCacheManager questionCacheManager;
     @Override
     public List<QuestionVO> list(QuestionQueryDTO questionQueryDTO) {
         String excludeIdStr = questionQueryDTO.getExcludeIdStr();
@@ -79,6 +82,8 @@ public class QuestionServiceImpl implements QuestionService {
         QuestionES questionES = new QuestionES();
         BeanUtil.copyProperties(question,questionES);
         questionRepository.save(questionES);
+        //对redis中题目顺序进行维护
+        questionCacheManager.addCache(question.getQuestionId());
         return true;
     }
 
@@ -141,6 +146,7 @@ public class QuestionServiceImpl implements QuestionService {
     public int delete(Long questionId) {
         extracted(questionId);
         questionRepository.deleteById(questionId);
+        questionCacheManager.deleteCache(questionId);
         return questionMapper.deleteById(questionId);
     }
 

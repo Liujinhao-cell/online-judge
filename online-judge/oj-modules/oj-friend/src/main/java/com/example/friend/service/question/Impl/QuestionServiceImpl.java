@@ -10,6 +10,7 @@ import com.example.friend.domain.question.dto.QuestionQueryDTO;
 import com.example.friend.domain.question.es.QuestionES;
 import com.example.friend.domain.question.vo.QuestionDetailVO;
 import com.example.friend.domain.question.vo.QuestionVO;
+import com.example.friend.manager.QuestionCacheManager;
 import com.example.friend.mapper.question.QuestionMapper;
 import com.example.friend.mapper.question.QuestionRepository;
 import com.example.friend.service.question.IQuestionService;
@@ -28,6 +29,8 @@ public class QuestionServiceImpl implements IQuestionService {
     private QuestionRepository questionRepository;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionCacheManager questionCacheManager;
     @Override
     public TableDataInfo list(QuestionQueryDTO questionQueryDTO) {
         //先查ES是否有数据
@@ -77,6 +80,24 @@ public class QuestionServiceImpl implements IQuestionService {
         refreshQuestion();
         BeanUtil.copyProperties(question,questionDetailVO);
         return questionDetailVO;
+    }
+
+    @Override
+    public String preQuestion(Long questionId) {
+        Long listSize = questionCacheManager.getListSize();
+        if(null == listSize || listSize <= 0){
+            questionCacheManager.refreshCache();
+        }
+        return questionCacheManager.preQuestion(questionId).toString();
+    }
+
+    @Override
+    public String nextQuestion(Long questionId) {
+        Long listSize = questionCacheManager.getListSize();
+        if(null == listSize || listSize <= 0){
+            questionCacheManager.refreshCache();
+        }
+        return questionCacheManager.nextQuestion(questionId).toString();
     }
 
     private void refreshQuestion() {
