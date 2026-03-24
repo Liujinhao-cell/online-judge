@@ -4,7 +4,16 @@ import lombok.Data;
 
 @Data
 public class UserExeResult {
+
     private String input;
-    private String expectOutput;
-    private String outPut;
+
+    /**
+     * 期望输出
+     */
+    private String output;
+
+    /**
+     *实际输出
+     */
+    private String exeOut;
 }
