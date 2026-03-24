@@ -20,6 +20,7 @@ public class ExamCacheManager {
     public void deleteCache(Long examId) {
         redisService.removeForList(getExamListKey(), examId);
         redisService.deleteObject(getDetailKey(examId));
+        redisService.deleteObject(getExamQuestionListKey(examId));
     }
 
     private String getExamListKey() {
@@ -28,5 +29,8 @@ public class ExamCacheManager {
 
     private String getDetailKey(Long examId) {
         return CacheConstants.EXAM_DETAIL + examId;
+    }
+    private String getExamQuestionListKey(Long examId) {
+        return CacheConstants.EXAM_QUESTION_LIST + examId;
     }
 }

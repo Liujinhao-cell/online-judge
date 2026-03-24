@@ -1,6 +1,7 @@
 package com.example.friend.controller.exam;
 
 import com.example.common.core.controller.BaseController;
+import com.example.common.core.domain.R;
 import com.example.common.core.domain.TableDataInfo;
 import com.example.friend.domain.exam.dto.ExamQueryDTO;
 import com.example.friend.service.exam.IExamService;
@@ -28,5 +29,18 @@ public class ExamController extends BaseController {
         return examService.redisList(examQueryDTO);
     }
 
+    @GetMapping("/getFirstQuestion")
+    public R<String> getFirstQuestion(Long examId){
+        return R.ok(examService.getFirstQuestion(examId));
+    }
+    @GetMapping("/preQuestion")
+    public R<String> preQuestion(Long examId,Long questionId){
+        return R.ok(examService.preQuestion(questionId,examId));
+    }
 
+    @GetMapping("/nextQuestion")
+    public R<String> nextQuestion(Long examId,Long questionId){
+        return R.ok(examService.nextQuestion(examId,questionId));
+    }
+    
 }

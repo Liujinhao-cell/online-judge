@@ -82,6 +82,9 @@ public class ExamServiceImpl extends ServiceImpl<ExamQuestionMapper,ExamQuestion
         if (exam.getStatus() == 1) {  // 假设1表示已开始
             throw new ServiceException(ResultCode.EXAM_ALREADY_STARTED_QUESTION_CAN_NOT_ADD);
         }
+        if(Constants.TRUE.equals(exam.getStatus())){
+            throw new ServiceException(ResultCode.EXAM_IS_PUBLISH);
+        }
         //3.题目需去重 -> set
         Set<Long> questionIdSet = examQuestionAddDTO.getQuestionIdSet();
         if(CollectionUtil.isEmpty(questionIdSet)){
@@ -97,6 +100,20 @@ public class ExamServiceImpl extends ServiceImpl<ExamQuestionMapper,ExamQuestion
         checkQuestionNotExistsInExam(questionIdSet, examId);
         //6.数据库批量插入
         return saveExamQuestion(questionIdSet, examId);
+    }
+
+    @Override
+    public int questionDelete(Long examId, Long questionId) {
+        Exam exam = getExam(examId);
+        //判断竞赛是否已经开赛
+        checkExam(exam);
+        //发布的竞赛不能操作
+        if(Constants.TRUE.equals(exam.getStatus())){
+            throw new ServiceException(ResultCode.EXAM_IS_PUBLISH);
+        }
+        return examQuestionMapper.delete(new LambdaQueryWrapper<ExamQuestion>()
+                .eq(ExamQuestion::getExamId,examId)
+                .eq(ExamQuestion::getQuestionId,questionId));
     }
 
     @Override
@@ -155,7 +172,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamQuestionMapper,ExamQuestion
         }
         Long count = examQuestionMapper.selectCount(new LambdaQueryWrapper<ExamQuestion>()
                 .eq(ExamQuestion::getExamId, examId));
-        if(count <= 0 || null == count){
+        if(count <= 0 || count == null){
             throw new ServiceException(ResultCode.EXAM_NOT_HAS_QUESTION);
         }
         exam.setStatus(Constants.TRUE);
@@ -177,15 +194,6 @@ public class ExamServiceImpl extends ServiceImpl<ExamQuestionMapper,ExamQuestion
         return examMapper.updateById(exam);
     }
 
-    @Override
-    public int questionDelete(Long examId, Long questionId) {
-        Exam exam = getExam(examId);
-        //判断竞赛是否已经开赛
-        checkExam(exam);
-        return examQuestionMapper.delete(new LambdaQueryWrapper<ExamQuestion>()
-                .eq(ExamQuestion::getExamId,examId)
-                .eq(ExamQuestion::getQuestionId,questionId));
-    }
 
     /**
      * 检查竞赛时间是否晚于当前时间

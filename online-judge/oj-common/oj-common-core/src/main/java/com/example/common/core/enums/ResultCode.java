@@ -43,13 +43,17 @@ public enum ResultCode {
     EXAM_IS_FINISH(3207,"竞赛已经结束，不能进行操作"),
     QUESTION_ALREADY_IN_EXAM(3208,"部分题目已在竞赛中，请勿重复添加"),
     EXAM_ALREADY_STARTED_QUESTION_CAN_NOT_ADD(3209,"竞赛已开始，不能添加题目"),
+    EXAM_IS_PUBLISH(3210,"竞赛已经发布了！"),
 
     USER_EXAM_HAS_ENTER(3301,"用户已经报过名，无需报名"),
 
     FAILED_FILE_UPLOAD(3401,"文件上传失败"),
     FAILED_FILE_UPLOAD_TIME_LIMIT(3402,"当天文件上传次数达到上限"),
-    FAILED_FIRST_QUESTION(3403,"当前题目已经是第一题了哦！"),
-    FAILED_LAST_QUESTION(3404,"我已经到底了！");
+
+    FAILED_FIRST_QUESTION(3501,"当前题目已经是第一题了哦！"),
+    FAILED_LAST_QUESTION(3502,"我已经到底了！"),
+
+    FAILED_NOT_SUPPORT_PROGRAM(3601,"当前不支持此语言");
     /**
      * 状态码
      */

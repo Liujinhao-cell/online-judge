@@ -11,18 +11,17 @@ import com.example.common.core.enums.ResultCode;
 import com.example.common.redis.service.RedisService;
 import com.example.common.security.exception.ServiceException;
 import com.example.friend.domain.exam.Exam;
-//import com.example.friend.domain.exam.ExamQuestion;
+import com.example.friend.domain.exam.ExamQuestion;
 import com.example.friend.domain.exam.dto.ExamQueryDTO;
 //import com.example.friend.domain.exam.dto.ExamRankDTO;
 //import com.example.friend.domain.exam.vo.ExamRankVO;
 import com.example.friend.domain.exam.vo.ExamVO;
-//import com.example.friend.domain.user.UserExam;
 import com.example.friend.domain.user.UserExam;
 import com.example.friend.mapper.exam.ExamMapper;
-//import com.example.friend.mapper.exam.ExamQuestionMapper;
-//import com.example.friend.mapper.user.UserExamMapper.xml;
+import com.example.friend.mapper.exam.ExamQuestionMapper;
 import com.example.friend.mapper.user.UserExamMapper;
 import com.github.pagehelper.PageHelper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,13 +35,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class ExamCacheManager {
 
     @Autowired
     private ExamMapper examMapper;
 
-//    @Autowired
-//    private ExamQuestionMapper examQuestionMapper;
+    @Autowired
+    private ExamQuestionMapper examQuestionMapper;
 
     @Autowired
     private UserExamMapper userExamMapper;
@@ -61,11 +61,11 @@ public class ExamCacheManager {
         return redisService.getListSize(examListKey);
     }
 
-//    public Long getExamQuestionListSize(Long examId) {
-//        String examQuestionListKey = getExamQuestionListKey(examId);
-//        return redisService.getListSize(examQuestionListKey);
-//    }
-//
+    public Long getExamQuestionListSize(Long examId) {
+        String examQuestionListKey = getExamQuestionListKey(examId);
+        return redisService.getListSize(examQuestionListKey);
+    }
+
 //    public Long getRankListSize(Long examId) {
 //        return redisService.getListSize(getExamRankListKey(examId));
 //    }
@@ -112,27 +112,27 @@ public class ExamCacheManager {
         redisService.leftPushForList(userExamListKey, examId);
     }
 
-//    public Long getFirstQuestion(Long examId) {
-//        return redisService.indexForList(getExamQuestionListKey(examId), 0, Long.class);
-//    }
-//
-//    public Long preQuestion(Long examId, Long questionId) {
-//        Long index = redisService.indexOfForList(getExamQuestionListKey(examId), questionId);
-//        if (index == 0) {
-//            throw new ServiceException(ResultCode.FAILED_FIRST_QUESTION);
-//        }
-//        return redisService.indexForList(getExamQuestionListKey(examId), index - 1, Long.class);
-//    }
-//
-//    public Long nextQuestion(Long examId, Long questionId) {
-//        Long index = redisService.indexOfForList(getExamQuestionListKey(examId), questionId);
-//        long lastIndex = getExamQuestionListSize(examId) - 1;
-//        if (index == lastIndex) {
-//            throw new ServiceException(ResultCode.FAILED_LAST_QUESTION);
-//        }
-//        return redisService.indexForList(getExamQuestionListKey(examId), index + 1, Long.class);
-//    }
-//
+    public Long getFirstQuestion(Long examId) {
+        return redisService.indexForList(getExamQuestionListKey(examId), 0, Long.class);
+    }
+
+    public Long preQuestion(Long examId, Long questionId) {
+        Long index = redisService.indexOfForList(getExamQuestionListKey(examId), questionId);
+        if (index == 0) {
+            throw new ServiceException(ResultCode.FAILED_FIRST_QUESTION);
+        }
+        return redisService.indexForList(getExamQuestionListKey(examId), index - 1, Long.class);
+    }
+
+    public Long nextQuestion(Long examId, Long questionId) {
+        Long index = redisService.indexOfForList(getExamQuestionListKey(examId), questionId);
+        long lastIndex = getExamQuestionListSize(examId) - 1;
+        if (index == lastIndex) {
+            throw new ServiceException(ResultCode.FAILED_LAST_QUESTION);
+        }
+        return redisService.indexForList(getExamQuestionListKey(examId), index + 1, Long.class);
+    }
+
     //刷新缓存逻辑
     public void refreshCache(Integer examListType, Long userId) {
         List<Exam> examList = new ArrayList<>();
@@ -169,24 +169,25 @@ public class ExamCacheManager {
         redisService.multiSet(examMap);  //刷新详情缓存
         redisService.deleteObject(getExamListKey(examListType, userId));
         redisService.rightPushAll(getExamListKey(examListType, userId), examIdList);      //刷新列表缓存
+
     }
 
-//    public void refreshExamQuestionCache(Long examId) {
-//        List<ExamQuestion> examQuestionList = examQuestionMapper.selectList(new LambdaQueryWrapper<ExamQuestion>()
-//                .select(ExamQuestion::getQuestionId)
-//                .eq(ExamQuestion::getExamId, examId)
-//                .orderByAsc(ExamQuestion::getQuestionOrder));
-//        if (CollectionUtil.isEmpty(examQuestionList)) {
-//            return;
-//        }
-//        List<Long> examQuestionIdList = examQuestionList.stream().map(ExamQuestion::getQuestionId).toList();
-//        redisService.rightPushAll(getExamQuestionListKey(examId), examQuestionIdList);
-//        //节省 redis缓存资源
-//        long seconds = ChronoUnit.SECONDS.between(LocalDateTime.now(),
-//                LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0));
-//        redisService.expire(getExamQuestionListKey(examId), seconds, TimeUnit.SECONDS);
-//    }
-//
+    public void refreshExamQuestionCache(Long examId) {
+        LambdaQueryWrapper<ExamQuestion> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ExamQuestion::getExamId, examId);
+        wrapper.select(ExamQuestion::getQuestionId);
+        List<ExamQuestion> examQuestionList = examQuestionMapper.selectList(wrapper);
+        if(CollectionUtil.isEmpty(examQuestionList)){
+            return;
+        }
+        List<Long> examQuestionIdList = examQuestionList.stream().map(ExamQuestion::getQuestionId).toList();
+        redisService.rightPushAll(getExamQuestionListKey(examId),examQuestionIdList);
+        //节省redis缓存资源
+        long seconds = ChronoUnit.SECONDS.between(LocalDateTime.now(),
+                    LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withNano(0));
+            redisService.expire(getExamQuestionListKey(examId),seconds,TimeUnit.SECONDS);
+    }
+
 //    public void refreshExamRankCache(Long examId) {
 //        List<ExamRankVO> examRankVOList = userExamMapper.selectExamRankList(examId);
 //        if (CollectionUtil.isEmpty(examRankVOList)) {
@@ -243,10 +244,11 @@ public class ExamCacheManager {
         return CacheConstants.USER_EXAM_LIST + userId;
     }
 
-//    private String getExamQuestionListKey(Long examId) {
-//        return CacheConstants.EXAM_QUESTION_LIST + examId;
-//    }
-//
+    private String getExamQuestionListKey(Long examId) {
+        return CacheConstants.EXAM_QUESTION_LIST + examId;
+    }
+
+
 //    private String getExamRankListKey(Long examId) {
 //        return CacheConstants.EXAM_RANK_LIST + examId;
 //    }

@@ -18,6 +18,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <module>oj-modules</module>
         <module>oj-common</module>
         <module>oj-gateway</module>
+        <module>oj-api</module>
     </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -42,6 +43,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <xxl-job.version>2.4.0</xxl-job.version>
         <transmittable-thread-local.version>2.14.4</transmittable-thread-local.version>
         <oj-common-elsticsearch.version>1.0-SNAPSHOT</oj-common-elsticsearch.version>
+        <oj-api.version>1.0-SNAPSHOT</oj-api.version>
         <aliyun-sdk-oss.version>3.17.4</aliyun-sdk-oss.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <activation.version>1.1.1</activation.version>

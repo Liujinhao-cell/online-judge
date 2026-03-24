@@ -37,7 +37,7 @@ public class QuestionES {
     private String questionCase;
 
     @Field(type = FieldType.Text)
-    private String mainFunc;
+    private String mainFuc;
 
     @Field(type = FieldType.Text)
     private String defaultCode;
