@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.api.UserExeResult;
 import com.example.api.dto.JudgeSubmitDTO;
@@ -26,8 +27,7 @@ import org.springframework.stereotype.Service;
 public class JudgeServiceImpl implements IJudgeService {
 
     @Autowired
-    private ISandboxPoolService sandboxPoolService;  // 改用容器池实现
-
+    private ISandboxPoolService sandboxPoolService;
     @Autowired
     private UserSubmitMapper userSubmitMapper;
 
@@ -189,7 +189,7 @@ public class JudgeServiceImpl implements IJudgeService {
         userSubmit.setExamId(judgeSubmitDTO.getExamId());
         userSubmit.setProgramType(judgeSubmitDTO.getProgramType());
         userSubmit.setUserCode(judgeSubmitDTO.getUserCode());
-
+        userSubmit.setCaseJudgeRes(JSON.toJSONString(userQuestionResultVO.getUserExeResultList()));
         // 手动设置审计字段
         Long userId = judgeSubmitDTO.getUserId();
         LocalDateTime now = LocalDateTime.now();

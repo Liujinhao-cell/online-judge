@@ -38,8 +38,6 @@ public class DockerSandBoxPoolConfig {
     @Value("${sandbox.docker.name-prefix:oj-sandbox-jdk}")
     private String containerNamePrefix;
 
-    // 删除这个字段，不再使用
-    // private DockerClient dockerClient;
 
     @Bean
     public DockerClient createDockerClient() {

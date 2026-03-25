@@ -13,7 +13,9 @@ import com.example.friend.domain.exam.Exam;
 import com.example.friend.domain.exam.dto.ExamQueryDTO;
 import com.example.friend.domain.exam.vo.ExamVO;
 import com.example.friend.domain.user.UserExam;
+import com.example.friend.domain.user.vo.UserVO;
 import com.example.friend.manager.ExamCacheManager;
+import com.example.friend.manager.UserCacheManager;
 import com.example.friend.mapper.exam.ExamMapper;
 import com.example.friend.mapper.user.UserExamMapper;
 import com.example.friend.service.user.IUserExamService;
@@ -39,9 +41,15 @@ public class UserExamServiceImpl implements IUserExamService {
     private ExamCacheManager examCacheManager;
     @Value("${jwt.secret}")
     private String secret;
-
+    @Autowired
+    private UserCacheManager userCacheManager;
     @Override
     public int enter(String token, Long examId) {
+//        Long userId = ThreadLocalUtil.get(Constants.USER_ID, Long.class);
+//        UserVO userVO = userCacheManager.getUserId(userId);
+//        if(userVO.getStatus() == 0){
+//            throw new ServiceException(ResultCode.FAILED_USER_BANNED);
+//        }
         Exam exam = examMapper.selectById(examId);
         if (null == exam) {
             throw new ServiceException(ResultCode.FAILED_NOT_EXISTS);
@@ -50,7 +58,6 @@ public class UserExamServiceImpl implements IUserExamService {
         if (exam.getStartTime().isBefore(LocalDateTime.now())) {
             throw new ServiceException(ResultCode.EXAM_STARTED);
         }
-//        Long userId = tokenService.getUserId(token,secret);
         Long userId = ThreadLocalUtil.get(Constants.USER_ID, Long.class);
         //不能重复报名
         UserExam userExam = userExamMapper.selectOne(new LambdaQueryWrapper<UserExam>()

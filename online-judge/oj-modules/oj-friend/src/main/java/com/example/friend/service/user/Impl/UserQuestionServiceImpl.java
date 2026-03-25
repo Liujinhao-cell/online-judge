@@ -1,22 +1,29 @@
 package com.example.friend.service.user.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson2.JSON;
 import com.example.api.RemoteJudgeService;
+import com.example.api.UserExeResult;
 import com.example.api.dto.JudgeSubmitDTO;
 import com.example.api.vo.UserQuestionResultVO;
 import com.example.common.core.constants.Constants;
 import com.example.common.core.domain.R;
 import com.example.common.core.enums.ProgramType;
+import com.example.common.core.enums.QuestionResType;
 import com.example.common.core.enums.ResultCode;
 import com.example.common.core.utils.ThreadLocalUtil;
 import com.example.common.security.exception.ServiceException;
 import com.example.friend.domain.question.Question;
 import com.example.friend.domain.question.QuestionCase;
 import com.example.friend.domain.question.es.QuestionES;
+import com.example.friend.domain.user.UserSubmit;
 import com.example.friend.domain.user.dto.UserSubmitDTO;
 import com.example.friend.mapper.question.QuestionMapper;
 import com.example.friend.mapper.question.QuestionRepository;
+import com.example.friend.mapper.user.UserSubmitMapper;
+import com.example.friend.rabbit.JudgeProducer;
 import com.example.friend.service.user.IUserQuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +41,10 @@ public class UserQuestionServiceImpl implements IUserQuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private RemoteJudgeService remoteJudgeService;
+    @Autowired
+    private JudgeProducer judgeProducer;
+    @Autowired
+    private UserSubmitMapper userSubmitMapper;
     @Override
     public R<UserQuestionResultVO> submit(UserSubmitDTO submitDTO) {
         Integer programType = submitDTO.getProgramType();
@@ -45,7 +56,36 @@ public class UserQuestionServiceImpl implements IUserQuestionService {
         throw new ServiceException(ResultCode.FAILED_NOT_SUPPORT_PROGRAM);
     }
 
-//    private JudgeSubmitDTO assembleJudgeSubmitDTO(UserSubmitDTO submitDTO) {
+    @Override
+    public boolean rabbitSubmit(UserSubmitDTO userSubmitDTO) {
+        Integer programType = userSubmitDTO.getProgramType();
+        if(ProgramType.JAVA.getValue().equals(programType)){
+            //java
+            JudgeSubmitDTO judgeSubmitDTO = assembleJudgeSubmitDTO(userSubmitDTO);
+            judgeProducer.produceMsg(judgeSubmitDTO);
+            return true;
+        }
+        throw new ServiceException(ResultCode.FAILED_NOT_SUPPORT_PROGRAM);
+    }
+
+    @Override
+    public UserQuestionResultVO exeResult(Long examId, Long questionId, String currentTime) {
+        Long userId = ThreadLocalUtil.get(Constants.USER_ID, Long.class);
+        UserSubmit userSubmit = userSubmitMapper.selectCurrentUserSubmit(userId,examId,questionId,currentTime);
+        UserQuestionResultVO userQuestionResultVO = new UserQuestionResultVO();
+        if(userSubmit == null){
+            userQuestionResultVO.setPass(QuestionResType.IN_JUDGE.getValue());
+        }else{
+            userQuestionResultVO.setPass(userSubmit.getPass());
+            userQuestionResultVO.setExeMessage(userSubmit.getExeMessage());
+            if(StrUtil.isEmpty(userSubmit.getCaseJudgeRes())){
+                userQuestionResultVO.setUserExeResultList(JSON.parseArray(userSubmit.getCaseJudgeRes(), UserExeResult.class));
+            }
+        }
+        return userQuestionResultVO;
+    }
+
+    //    private JudgeSubmitDTO assembleJudgeSubmitDTO(UserSubmitDTO submitDTO) {
 //        Long questionId = submitDTO.getQuestionId();
 //        //orElse查出返回数据本身 ，未查出返回null
 //        QuestionES questionES = questionRepository.findById(questionId).orElse(null);
@@ -90,9 +130,7 @@ private JudgeSubmitDTO assembleJudgeSubmitDTO(UserSubmitDTO submitDTO) {
     judgeSubmitDTO.setProgramType(submitDTO.getProgramType());
     judgeSubmitDTO.setUserCode(codeConnect(submitDTO.getUserCode(), questionES.getMainFuc()));
 
-    // ========== 修改这里：使用安全的解析方法 ==========
     List<QuestionCase> questionCaseList = parseQuestionCaseSafely(questionES.getQuestionCase());
-    // ===============================================
 
     List<String> inputList = questionCaseList.stream().map(QuestionCase::getInput).toList();
     List<String> outputList = questionCaseList.stream().map(QuestionCase::getOutput).toList();

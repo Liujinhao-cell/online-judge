@@ -64,4 +64,6 @@ public class UserVO {
      */
     private String introduce;
 
+    private Integer status;
+
 }
