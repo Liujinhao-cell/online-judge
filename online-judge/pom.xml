@@ -48,6 +48,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <activation.version>1.1.1</activation.version>
         <jaxb-runtime.verison>2.3.3</jaxb-runtime.verison>
+        <oj-common-rabbitmq.version>1.0-SNAPSHOT</oj-common-rabbitmq.version>
     </properties>
     <dependencies>
         <!-- bootstrap 启动器 -->

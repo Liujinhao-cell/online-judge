@@ -38,5 +38,25 @@
             <artifactId>docker-java</artifactId>
             <version>3.3.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java-transport-httpclient5</artifactId>
+            <version>3.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>oj-common-elsticsearch</artifactId>
+            <version>${oj-common-elsticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>oj-common-core</artifactId>
+            <version>${oj-common-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>oj-common-rabbitmq</artifactId>
+            <version>${oj-common-rabbitmq.version}</version>
+        </dependency>
     </dependencies>
 </project>

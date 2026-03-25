@@ -59,5 +59,15 @@
             <artifactId>oj-api</artifactId>
             <version>${oj-api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>oj-common-rabbitmq</artifactId>
+            <version>${oj-common-rabbitmq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>oj-common-core</artifactId>
+            <version>${oj-common-core.version}</version>
+        </dependency>
     </dependencies>
 </project>
