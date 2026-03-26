@@ -10,7 +10,7 @@
 👉 [Issues](https://gitee.com/liu-jinhao-C/online-judge-30days/issues) 按时间倒序
 
 **项目演示**：
-🔗 （3月23日上线后更新）
+🔗 （3月27日上线后更新）
 
 **关于我**：
 某大三学生，2027届，正在找实习。
@@ -33,7 +33,8 @@ B端后台管理系统：http://xxx.xxx.xxx.xxx/swagger-ui.html （待部署）
 🛠️ 技术栈
 后端
 技术	
-Spring Boot	
+Spring Boot
+Spring Cloud	
 Spring MVC	
 MyBatis	
 MySQL	
