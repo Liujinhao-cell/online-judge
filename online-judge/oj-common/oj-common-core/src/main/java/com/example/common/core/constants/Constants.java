@@ -15,4 +15,6 @@ public class Constants {
     public static final String UNDERLINE_SEPARATOR = "_";
 
     public static final String UTF8 = "UTF-8";
+
+    public static final Long SYSTEM_USER_ID = 1L;
 }

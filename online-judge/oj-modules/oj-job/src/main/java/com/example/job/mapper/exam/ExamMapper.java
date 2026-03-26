@@ -1,7 +1,7 @@
-package com.example.job.mapper;
+package com.example.job.mapper.exam;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.job.domain.Exam;
+import com.example.job.domain.exam.Exam;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

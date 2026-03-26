@@ -1,4 +1,4 @@
-package com.example.job.domain;
+package com.example.job.domain.exam;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
