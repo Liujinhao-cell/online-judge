@@ -100,6 +100,11 @@ public class QuestionServiceImpl implements IQuestionService {
         return questionCacheManager.nextQuestion(questionId).toString();
     }
 
+    @Override
+    public List<QuestionVO> getHotQuestionList() {
+        return questionMapper.selectHotQuestionList();
+    }
+
     private void refreshQuestion() {
         List<Question> questionList = questionMapper.selectList(new LambdaQueryWrapper<Question>());
         if(CollectionUtil.isEmpty(questionList)){

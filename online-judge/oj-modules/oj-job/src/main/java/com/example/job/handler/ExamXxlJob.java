@@ -13,6 +13,7 @@ import com.example.job.domain.message.vo.MessageTextVO;
 import com.example.job.domain.user.UserScore;
 import com.example.job.mapper.exam.ExamMapper;
 import com.example.job.mapper.message.MessageTextMapper;
+import com.example.job.mapper.user.UserExamMapper;
 import com.example.job.mapper.user.UserSubmitMapper;
 import com.example.job.service.IMessageService;
 import com.example.job.service.IMessageTextService;
@@ -40,6 +41,8 @@ public class ExamXxlJob {
     private IMessageTextService messageTextService;
     @Autowired
     private IMessageService messageService;
+    @Autowired
+    private UserExamMapper userExamMapper;
     @XxlJob("examListOrganizeHandler")
     public void examListOrganizeHandler(){
         //哪些竞赛应该存入历史竞赛列表 未完赛列表
@@ -89,6 +92,7 @@ public class ExamXxlJob {
                 String msgTitle = exam.getTitle() +"——排名情况";
                 String msgContent = "您所参与的竞赛:"+exam.getTitle() +
                         ",本次参与竞赛一共"+totalUser+"人，您排名第"+examRank +"名";
+                userScore.setExamRank(examRank);
                 MessageText messageText = new MessageText();
                 messageText.setMessageContent(msgContent);
                 messageText.setMessageTitle(msgTitle);
@@ -98,8 +102,13 @@ public class ExamXxlJob {
                 message.setSendId(Constants.SYSTEM_USER_ID);
                 message.setCreateBy(Constants.SYSTEM_USER_ID);
                 message.setRecId(userScore.getUserId());
+                messageList.add(message);
                 examRank++;
             }
+            //用户排名信息存储mysql数据库
+            userExamMapper.updateUserScoreAndRank(userScoreList);
+            String examRankListKey = getExamRankListKey(examId);
+            redisService.rightPushAll(examRankListKey,userScoreList);
         }
         messageTextService.batchInsert(messageTextList);
         Map<String,MessageTextVO> messageTextVOMap = new HashMap<>();
@@ -151,5 +160,9 @@ public class ExamXxlJob {
 
     private String getMsgDetailKey(Long textId) {
         return CacheConstants.MESSAGE_DETAIL;
+    }
+
+    private String getExamRankListKey(Long examId){
+        return CacheConstants.EXAM_RANK_LIST+examId;
     }
 }

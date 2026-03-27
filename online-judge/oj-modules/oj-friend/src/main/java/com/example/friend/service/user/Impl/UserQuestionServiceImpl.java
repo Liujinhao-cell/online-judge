@@ -93,7 +93,7 @@ public class UserQuestionServiceImpl implements IUserQuestionService {
 //        if(questionES != null){
 //            BeanUtil.copyProperties(questionES,judgeSubmitDTO);
 //        }else{
-//            Question question = questionMapper.selectById(questionId);
+//            Question question = QuestionMapper.xml.selectById(questionId);
 //            BeanUtil.copyProperties(question,judgeSubmitDTO);
 //            questionES = new QuestionES();
 //            BeanUtil.copyProperties(question,questionES);

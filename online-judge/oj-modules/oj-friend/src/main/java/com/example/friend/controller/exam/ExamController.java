@@ -4,6 +4,7 @@ import com.example.common.core.controller.BaseController;
 import com.example.common.core.domain.R;
 import com.example.common.core.domain.TableDataInfo;
 import com.example.friend.domain.exam.dto.ExamQueryDTO;
+import com.example.friend.domain.exam.dto.ExamRankDTO;
 import com.example.friend.service.exam.IExamService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class ExamController extends BaseController {
     @Operation(summary = "竞赛列表", description = "查询竞赛列表")
     public TableDataInfo list(ExamQueryDTO examQueryDTO){
         return getTableDataInfo(examService.list(examQueryDTO));
+    }
+
+    @GetMapping("/rank/list")
+    @Operation(summary = "竞赛排名列表", description = "redis中查询竞赛排名列表")
+    public TableDataInfo rankList(ExamRankDTO examRankDTO){
+        return examService.rankList(examRankDTO);
     }
 
     @GetMapping("/semiLogin/redis/list")
@@ -42,5 +49,6 @@ public class ExamController extends BaseController {
     public R<String> nextQuestion(Long examId,Long questionId){
         return R.ok(examService.nextQuestion(examId,questionId));
     }
-    
+
+
 }

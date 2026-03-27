@@ -43,7 +43,7 @@ public class QuestionCacheManager {
     public Long preQuestion(Long questionId) {
         //先加载redis中全量数据库的内容
 //        List<Long> list = redisService.getCacheListByRange(CacheConstants.QUESTION_LIST, 0, -1, Long.class);
-//        Question question = questionMapper.selectById(questionId);
+//        Question question = QuestionMapper.xml.selectById(questionId);
 //        Long index = list.indexOf(question);
         Long index = redisService.indexOfForList(CacheConstants.QUESTION_LIST, questionId);
         if(index == 0){

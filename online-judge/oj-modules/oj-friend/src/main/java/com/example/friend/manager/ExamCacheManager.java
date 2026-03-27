@@ -15,6 +15,8 @@ import com.example.friend.domain.exam.ExamQuestion;
 import com.example.friend.domain.exam.dto.ExamQueryDTO;
 //import com.example.friend.domain.exam.dto.ExamRankDTO;
 //import com.example.friend.domain.exam.vo.ExamRankVO;
+import com.example.friend.domain.exam.dto.ExamRankDTO;
+import com.example.friend.domain.exam.vo.ExamRankVO;
 import com.example.friend.domain.exam.vo.ExamVO;
 import com.example.friend.domain.user.UserExam;
 import com.example.friend.mapper.exam.ExamMapper;
@@ -66,9 +68,9 @@ public class ExamCacheManager {
         return redisService.getListSize(examQuestionListKey);
     }
 
-//    public Long getRankListSize(Long examId) {
-//        return redisService.getListSize(getExamRankListKey(examId));
-//    }
+    public Long getRankListSize(Long examId) {
+        return redisService.getListSize(getExamRankListKey(examId));
+    }
 
     public List<ExamVO> getExamVOList(ExamQueryDTO examQueryDTO, Long userId) {
         int start = (examQueryDTO.getPageNum() - 1) * examQueryDTO.getPageSize();
@@ -84,12 +86,12 @@ public class ExamCacheManager {
         return examVOList;
     }
 
-//    public List<ExamRankVO> getExamRankList(ExamRankDTO examRankDTO) {
-//        int start = (examRankDTO.getPageNum() - 1) * examRankDTO.getPageSize();
-//        int end = start + examRankDTO.getPageSize() - 1; //下标需要 -1
-//        return redisService.getCacheListByRange(getExamRankListKey(examRankDTO.getExamId()), start, end, ExamRankVO.class);
-//    }
-//
+    public List<ExamRankVO> getExamRankList(ExamRankDTO examRankDTO) {
+        int start = (examRankDTO.getPageNum() - 1) * examRankDTO.getPageSize();
+        int end = start + examRankDTO.getPageSize() - 1; //下标需要 -1
+        return redisService.getCacheListByRange(getExamRankListKey(examRankDTO.getExamId()), start, end, ExamRankVO.class);
+    }
+
     public List<Long> getAllUserExamList(Long userId) {
         String examListKey = CacheConstants.USER_EXAM_LIST + userId;
         List<Long> userExamIdList = redisService.getCacheListByRange(examListKey, 0, -1, Long.class);
@@ -188,14 +190,14 @@ public class ExamCacheManager {
             redisService.expire(getExamQuestionListKey(examId),seconds,TimeUnit.SECONDS);
     }
 
-//    public void refreshExamRankCache(Long examId) {
-//        List<ExamRankVO> examRankVOList = userExamMapper.selectExamRankList(examId);
-//        if (CollectionUtil.isEmpty(examRankVOList)) {
-//            return;
-//        }
-//        redisService.rightPushAll(getExamRankListKey(examId), examRankVOList);
-//    }
-//
+    public void refreshExamRankCache(Long examId) {
+        List<ExamRankVO> examRankVOList = userExamMapper.selectExamRankList(examId);
+        if (CollectionUtil.isEmpty(examRankVOList)) {
+            return;
+        }
+        redisService.rightPushAll(getExamRankListKey(examId), examRankVOList);
+    }
+
     private List<ExamVO> getExamListByDB(ExamQueryDTO examQueryDTO, Long userId) {
         PageHelper.startPage(examQueryDTO.getPageNum(), examQueryDTO.getPageSize());
         if (ExamListType.USER_EXAM_LIST.getValue().equals(examQueryDTO.getType())) {
@@ -248,8 +250,7 @@ public class ExamCacheManager {
         return CacheConstants.EXAM_QUESTION_LIST + examId;
     }
 
-
-//    private String getExamRankListKey(Long examId) {
-//        return CacheConstants.EXAM_RANK_LIST + examId;
-//    }
+    public String getExamRankListKey(Long examId) {
+        return CacheConstants.EXAM_RANK_LIST + examId;
+    }
 }

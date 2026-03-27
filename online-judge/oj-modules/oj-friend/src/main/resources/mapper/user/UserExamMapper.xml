@@ -17,4 +17,16 @@
           AND e.status = 1
         ORDER BY ue.create_time DESC
     </select>
+    <select id="selectExamRankList" resultType="com.example.friend.domain.exam.vo.ExamRankVO">
+        SELECT
+            user_id,
+            score,
+            exam_rank
+        FROM
+            bitoj_dev.tb_user_exam
+        WHERE
+            exam_id = #{examId}
+        ORDER BY
+            exam_rank
+    </select>
 </mapper>

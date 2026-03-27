@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.friend.mapper.question.QuestionMapper">
+
+    <select id="selectHotQuestionList" resultType="com.example.friend.domain.question.vo.QuestionVO">
+        SELECT
+            q.question_id AS questionId,
+            q.title AS title
+        FROM
+            bitoj_dev.tb_user_submit s
+                LEFT JOIN
+            bitoj_dev.tb_question q
+                ON s.question_id = q.question_id
+        WHERE
+            q.question_id IS NOT NULL
+        GROUP BY
+            s.question_id, q.title
+        ORDER BY
+            COUNT(s.submit_id) DESC
+        LIMIT 5
+    </select>
+
+</mapper>

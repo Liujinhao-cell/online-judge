@@ -5,12 +5,15 @@ import com.example.common.core.domain.R;
 import com.example.common.core.domain.TableDataInfo;
 import com.example.friend.domain.question.dto.QuestionQueryDTO;
 import com.example.friend.domain.question.vo.QuestionDetailVO;
+import com.example.friend.domain.question.vo.QuestionVO;
 import com.example.friend.mapper.question.QuestionMapper;
 import com.example.friend.service.question.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/question")
@@ -56,5 +59,15 @@ public class QuestionController extends BaseController {
     @GetMapping("/nextQuestion")
     public R<String> nextQuestion(Long questionId){
         return R.ok(questionService.nextQuestion(questionId));
+    }
+
+
+    /**
+     * 获取热榜题目前5
+     */
+    @GetMapping("/semiLogin/hotList")
+    public R<List<QuestionVO>> hotList() {
+        List<QuestionVO> hotList = questionService.getHotQuestionList();
+        return R.ok(hotList);
     }
 }
