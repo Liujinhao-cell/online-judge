@@ -7,7 +7,7 @@
 - ✅ 全容器化部署（HTTPS公网访问）
 
 **每日日志**（每天更新）：
-👉 [Issues](https://gitee.com/liu-jinhao-C/online-judge-30days/issues) 按时间倒序
+👉 [Issues](https://gitee.com/liu-jinhao-C/online-judge-30days/issues?q=is%3Aall) 按时间倒序
 
 **项目演示**：
 🔗 （3月27日上线后更新）
