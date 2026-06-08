@@ -10,7 +10,8 @@
 👉 [Issues](https://gitee.com/liu-jinhao-C/online-judge-30days/issues?q=is%3Aall) 按时间倒序
 
 **项目演示**：
-🔗 http://47.118.20.7:5413/
+🔗 http://121.40.52.24:5413/c-oj/home/question
+
 
 **关于我**：
 某大三学生，2027届。
@@ -20,8 +21,8 @@
 原 OJ 系统已具备稳定的代码提交、Docker 沙箱判题和结果持久化能力，但传统判题结果主要停留在 AC / WA / TLE / MLE 等状态反馈，无法进一步解释代码错误原因、识别潜在风险代码，也缺少针对用户历史提交记录的个性化学习建议。为在不改动原 Java 判题主链路、不影响判题准确性和系统稳定性的前提下增强用户反馈能力，后续增量接入 Python FastAPI + LangGraph AI 判题增强服务，实现静态扫描、安全风控、RAG 题解检索、用户记忆和 AI 个性化反馈。
 代码：https://gitee.com/liu-jinhao-C/online-judge-ai
 ✨ 在线体验
-C端后台判题系统：http://47.118.20.7:5413/
-B端后台管理系统：http://47.118.20.7:5413/b/
+C端后台判题系统：http://121.40.52.24:5413/c-oj/home/question
+B端后台管理系统：http://121.40.52.24:5413/oj/login
 后台管理系统测试账号：admin@123 / 123456
 
 🎯 核心功能
