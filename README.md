@@ -22,6 +22,7 @@
 代码：https://gitee.com/liu-jinhao-C/online-judge-ai
 ✨ 在线体验
 C端后台判题系统：http://121.40.52.24:5413/c-oj/home/question
+C端后台判题系统:随便的QQ邮箱：2212910133@qq.com / 验证码：123456 
 B端后台管理系统：http://121.40.52.24:5413/oj/login
 后台管理系统测试账号：admin@123 / 123456
 
